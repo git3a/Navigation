@@ -16,6 +16,7 @@ public class Menu extends AppCompatActivity {
 
     private TextView mTextMessage;
     private ImageView imageView;
+    private BottomNavigationView navigation;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -24,7 +25,7 @@ public class Menu extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    loadHome();
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
@@ -42,17 +43,28 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //mTextMessage = (TextView) findViewById(R.id.message);
-        //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        loadHome();
+    }
+    private void loadHome() {
+
+        setContentView(R.layout.activity_home);
+        //mTextMessage = (TextView) findViewById(R.id.message);
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         imageView = findViewById(R.id.image7);
-        String url = "http://bpic.588ku.com/element_origin_min_pic/16/09/23/1757e4f641d3e6e.jpg";
-        Picasso.get().load(url).into(imageView);
-        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.activity_recipe);
+                navigation = findViewById(R.id.navigation);
+                navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
             }
         });
+
+        String url = "http://bpic.588ku.com/element_origin_min_pic/16/09/23/1757e4f641d3e6e.jpg";
+        Picasso.get().load(url).into(imageView);
+        System.out.println("load home");
     }
 
 }
