@@ -38,10 +38,11 @@
                 android:id="@+id/image7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/pic2" />
+                android:src="@drawable/pic2"
+                app:srcCompat="@android:color/background_light" />
 
             <TextView
-                android:id="@+id/title_marterial"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
