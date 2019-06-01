@@ -43,7 +43,7 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         //mTextMessage = (TextView) findViewById(R.id.message);
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        imageView = findViewById(R.id.image1);
+        imageView = findViewById(R.id.image7);
         String url = "http://bpic.588ku.com/element_origin_min_pic/16/09/23/1757e4f641d3e6e.jpg";
         Picasso.get().load(url).into(imageView);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
