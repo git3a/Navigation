@@ -10,11 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.Window;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -25,9 +24,10 @@ import com.alibaba.fastjson.*;
 public class Menu extends AppCompatActivity {
 
     private TextView mTextMessage;
-    private ImageView imageView;
+
     private BottomNavigationView navigation;
     private TextView recipeName;
+    private ImageView imageView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -61,10 +61,10 @@ public class Menu extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
         //mTextMessage = (TextView) findViewById(R.id.message);
-        recipeName = findViewById(R.id.name);
+        recipeName = findViewById(R.id.textView1);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        imageView = findViewById(R.id.image7);
+        imageView = findViewById(R.id.imageView1);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
