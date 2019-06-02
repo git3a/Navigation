@@ -16,13 +16,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.regex.Pattern;
 
-
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 
 public class Register extends AppCompatActivity {
     private Button b1;
@@ -105,20 +99,8 @@ public class Register extends AppCompatActivity {
             } else {
                 er.setText(" 新規作成 成功! ");
                 er.setVisibility(view.INVISIBLE);
-                //setData(uname, pass1);
-                String temp = uname + "$" + pass1;
-                //account(temp);
-                //String path = "F://user.txt";
 
-                //File writer = new File("F:\\user.txt");
-                    try {
-                        FileOutputStream fos = new FileOutputStream(new File("F:\\user.txt"));
-                        PrintStream ps = new PrintStream(fos);
-                        ps.print(temp);
-                        ps.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                regist(uname, email, pass1);
 
                 Intent intent = new Intent();
                 intent.setClass(Register.this, MainActivity.class);
@@ -126,52 +108,33 @@ public class Register extends AppCompatActivity {
             }
 
         }
-        //getButton.setText("got data");
-        //getData();
-        //System.out.println("*********************************");
-        //String a = "test";
-        //System.out.println(a);
 
-        //txv.setText(data);
+        private void regist(String uname, String email, String pass) {
+            Request.Builder reqBuild = new Request.Builder().get();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.2.102:8000/regist")
+                    .newBuilder();
+            urlBuilder.addQueryParameter("user", uname);
+            urlBuilder.addQueryParameter("email", email);
+            urlBuilder.addQueryParameter("password", pass);
+            OkHttpClient okHttpClient = new OkHttpClient();
+            reqBuild.url(urlBuilder.build());
+            Request request = reqBuild.build();
 
+            Call call = okHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    String err = e.getMessage();
+                    System.out.println(err);
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    // final String data = response.body().string();
+                    System.out.println("onResponse");
+                }
+            });
+        }
     }
-
-
-//        String sql1 = "INSERT INTO users VALUES('"+user+"', '"+password+"')";
-//        String getUrl = "http://192.168.1.45:8000/insert";
-//        OkHttpClient okHttpClient = new OkHttpClient();
-//        Request request = new Request.Builder()
-//                .url(getUrl)
-//                .get()
-//                .build();
-//        Call call = okHttpClient.newCall(request);
-//        call.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                String err = e.getMessage().toString();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                // final String data = response.body().string();
-//                Message msg = handler.obtainMessage();
-//                msg.obj = response.body().string();
-//                handler.sendMessage(msg);
-//            }
-//        });
-
-//    Handler handler = new Handler(new Handler.Callback() {
-//        @Override
-//        public boolean handleMessage(Message msg) {
-//            String m = (String) msg.obj;
-//            try {
-//                er.setText(m);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return false;
-//        }
-//    });
-
 }
 

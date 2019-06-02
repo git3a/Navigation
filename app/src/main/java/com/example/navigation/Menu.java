@@ -19,11 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import com.alibaba.fastjson.*;
 
 public class Menu extends AppCompatActivity {
