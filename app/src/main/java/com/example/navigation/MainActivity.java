@@ -8,20 +8,27 @@ import android.view.View;
 import android.widget.*;
 import android.os.Handler;
 import java.io.IOException;
+import java.util.Map;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONObject;
+import com.squareup.picasso.Picasso;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 //import java.io.*;
 //import java.util.regex.Pattern;
 //import java.io.InputStreamReader;
 //import java.io.InputStream;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private Button button1;
     private Button button2;
 
+    private String _username = "";
+    private String _password = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,18 +57,22 @@ public class MainActivity extends AppCompatActivity {
     class MyClick implements View.OnClickListener{
         @Override
         public void onClick(View view) {
+
             String user = username.getText().toString();
             String pass = password.getText().toString();
+            //System.out.println(user);
+            //System.out.println(pass);
             //button1.setText("got data");
             if (user.isEmpty() || pass.isEmpty()) {
                 err.setText("ID or password is empty");
                 err.setVisibility(View.VISIBLE);
                 return;
             }
-            String line = "q 123";
-            String[] sArr=line.split(" ");
+            getUserData(user);
+
+
             String mess = "";
-            if(! sArr[0].equals(user)) {
+            if(!_username.equals(user)) {
                 mess += " ユーザが存在しません ";
             }
             if(!mess.isEmpty()) {
@@ -68,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 return ;
             }
 
-            if(! sArr[1].equals(pass)) {
+            if(! _password.equals(pass)) {
                 mess += " パスワードが間違った ";
             }
             if(!mess.isEmpty()) {
@@ -85,53 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //return ;
             }
-
-
-            //err.setText("ログイン中");
-            //err.setVisibility(View.INVISIBLE);
-            //Toast.makeText("ログイン中", Toast.LENGTH_SHORT).show();
-//                File file = null;
-//                FileReader fileReader=null;
-//                BufferedReader bufferedReader=null;
-
-
-
-//                    Thread.sleep(500);
-//                    file = new File("F:\\user.txt");
-//                    fileReader=new FileReader(file);
-//                    StringBuilder result = new StringBuilder();
-//                    bufferedReader=new BufferedReader(fileReader);
-            //FileInputStream fis = getAssets().open("F:\\user.txt");
-            //InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "utf-8");
-            //BufferedReader br = new BufferedReader();
-//                    File dirFile = new File("F:\\user.txt");
-//                    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(dirFile)));
-//                    String line = br.readLine();
-
-//                    String lineTxt = null;
-//                    String out = "";
-//                    while ((lineTxt = bufferedReader.readLine()) != null) {
-//                        out += lineTxt + "\r\n";
-//                    }
-//                    if(bufferedReader!=null){
-//                        bufferedReader.close();
-//                    }
-//                    if(fileReader!=null){
-//                        fileReader.close();
-//                    }
-
-
-
         }
-
-        //getButton.setText("got data");
-        //getData();
-        //System.out.println("*********************************");
-        //String a = "test";
-        //System.out.println(a);
-
-        //txv.setText(data);
-
     }
     class ReClick implements View.OnClickListener {
         public void onClick(View view) {
@@ -139,70 +106,39 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+    private void getUserData(String uname) {
+        Request.Builder reqBuild = new Request.Builder().get();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.2.102:8000/getuser")
+                .newBuilder();
+        urlBuilder.addQueryParameter("user", uname);
 
-//    private void getData(String user, String password) {
-//        String temp = user + "$" + password;
-//        String path = "F:\\user.txt";
-//        String mess = "";
-//        try {
-//            File file = new File(path);
-//            if(file.isFile() && file.exists()) {
-//                InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "utf-8");
-//                BufferedReader br = new BufferedReader(isr);
-//                String lineTxt = null;
-//                while ((lineTxt = br.readLine()) != null) {
-//                }
-//                br.close();
-//                boolean match1 = Pattern.matches(lineTxt, user);
-//                if(!match1) {
-//                    mess += " ユーザが存在しません ";
-//                }
-//                if(!mess.isEmpty()) {
-//                    err.setText(mess);
-//                    err.setVisibility(view.VISIBLE);
-//                    return ;
-//                }
-//            } else {
-//                System.out.println("文件不存在!");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        OkHttpClient okHttpClient = new OkHttpClient();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
 
-    //boolean match2 = Pattern.matches(pattern2, uname);
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String err = e.getMessage();
+                System.out.println(err);
+            }
 
-//        String getUrl = "http://192.168.1.45:8000/get";
-//        OkHttpClient okHttpClient = new OkHttpClient();
-//        Request request = new Request.Builder()
-//                .url(getUrl)
-//                .get()
-//                .build();
-//        Call call = okHttpClient.newCall(request);
-//        call.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                String err = e.getMessage().toString();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//               // final String data = response.body().string();
-//                Message msg = handler.obtainMessage();
-//                msg.obj = response.body().string();
-//                handler.sendMessage(msg);
-//            }
-//        });
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // final String data = response.body().string();
+                System.out.println("onResponse");
 
-//    Handler handler = new Handler(new Handler.Callback() {
-//        @Override
-//        public boolean handleMessage(Message msg) {
-//            String m = (String) msg.obj;
-//            try {
-//                err.setText(m);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return false;
-//        }
-//    });
+
+                String m = response.body().string();
+                Map<String,String> map = (Map) JSONObject.parse(m);
+                _username = map.get("username");
+                _password = map.get("password");
+
+            }
+
+        });
+        while(_username == "");
+    }
+
 }
