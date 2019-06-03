@@ -1,6 +1,7 @@
 package com.example.navigation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,9 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     private String _username = "";
     private String _password = "";
+
+    private SharedPreferences sharedPreferences ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkLogin();
         setContentView(R.layout.activity_login);
 
         button1 = findViewById(R.id.login);
@@ -68,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 err.setVisibility(View.VISIBLE);
                 return;
             }
-            getUserData(user);
-
+            //getUserData(user);
+            _username = "q";
+            _password = "123";
 
             String mess = "";
             if(!_username.equals(user)) {
@@ -90,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 return ;
             }else{
                 mess = "ログイン成功!";
+                userUpdate();
                 err.setText(mess);
                 err.setVisibility(view.VISIBLE);
 
@@ -141,4 +148,25 @@ public class MainActivity extends AppCompatActivity {
         while(_username == "");
     }
 
+    private void userUpdate() {
+        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String susername = sharedPreferences.getString("username", "");
+        String spassword = sharedPreferences.getString("password","");
+        if (susername.equals("") && spassword.equals("")) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", "q");
+            editor.putString("password", "123");
+            editor.commit();
+        }
+    }
+    private void checkLogin() {
+        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String susername = sharedPreferences.getString("username", "");
+        String spassword = sharedPreferences.getString("password","");
+        if (!susername.equals("") && !spassword.equals("")) {
+            Intent intent = new Intent(MainActivity.this, Menu.class);
+            startActivity(intent);
+        }
+
+    }
 }
