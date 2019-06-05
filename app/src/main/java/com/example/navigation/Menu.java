@@ -136,9 +136,15 @@ public class Menu extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress);
         staggeredRecyclerViewAdapter =
                 new StaggeredRecyclerViewAdapter(this,mNames,mImageUrls);
+
+        //perfectly solve the blink problem
+        staggeredRecyclerViewAdapter.setHasStableIds(true);
+
         final StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(NUM_COLUMNS, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        recyclerView.getItemAnimator().setChangeDuration(0);
+
         recyclerView.setAdapter(staggeredRecyclerViewAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
