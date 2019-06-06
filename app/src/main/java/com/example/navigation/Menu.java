@@ -139,9 +139,11 @@ public class Menu extends AppCompatActivity {
 
         //perfectly solve the blink problem
         staggeredRecyclerViewAdapter.setHasStableIds(true);
-
         final StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(NUM_COLUMNS, LinearLayoutManager.VERTICAL);
+        //forbid swap side of two columns
+        //staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.getItemAnimator().setChangeDuration(0);
 
