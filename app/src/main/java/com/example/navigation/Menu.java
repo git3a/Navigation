@@ -2,7 +2,6 @@ package com.example.navigation;
 
 import java.util.*;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,8 +19,6 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -50,10 +47,15 @@ public class Menu extends AppCompatActivity {
                 case R.id.navigation_home:
                     loadHome();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_favorite:
                     //mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
+                    //mTextMessage.setText(R.string.title_notifications);
+                    return true;
+                case R.id.navigation_person:
+                    Intent intent = new Intent(Menu.this, My.class);
+                    startActivity(intent);
                     //mTextMessage.setText(R.string.title_notifications);
                     return true;
             }

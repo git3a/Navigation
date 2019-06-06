@@ -10,11 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -50,10 +48,13 @@ public class  Recipe extends AppCompatActivity {
                     Intent intent = new Intent(Recipe.this, Menu.class);
                     startActivity(intent);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_favorite:
 
                     return true;
                 case R.id.navigation_notifications:
+
+                    return true;
+                case R.id.navigation_person:
 
                     return true;
             }
