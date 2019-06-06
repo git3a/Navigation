@@ -60,6 +60,9 @@ public class Menu extends AppCompatActivity {
             return false;
         }
     };
+    private List<String> name = new ArrayList<>();
+    private  List<String> picurl = new ArrayList<>();
+    private boolean lock = true; // thread lock
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,39 +71,13 @@ public class Menu extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //mTextMessage = (TextView) findViewById(R.id.message);
         initImageBitmaps();
+
         //loadHome();
     }
     private void initImageBitmaps(){
         Log.d(TAG,"initImageBitmaps: preparing bitmaps.");
         //Here to process your JSON, Leader.
-        mImageUrls.add("https://assets3.thrillist.com/v1/image/2797371/size/tmg-article_default_mobile.jpg");
-        mNames.add("Hamberger");
-        mImageUrls.add("https://ichef.bbci.co.uk/food/ic/food_16x9_832/recipes/one_pot_chorizo_and_15611_16x9.jpg");
-        mNames.add("noodles");
-        mImageUrls.add("https://www.bbcgoodfood.com/sites/default/files/guide/guide-image/2018/06/chicken-wings-main.jpg");
-        mNames.add("Chicken Wings");
-        mImageUrls.add("https://assets3.thrillist.com/v1/image/2815308/size/tmg-article_default_mobile.jpg");
-        mNames.add("Fried Chiken");
-        mImageUrls.add("https://wi-images.condecdn.net/image/V1RQ0lZ8pgQ/crop/3240/f/istock-459025743.jpg");
-        mNames.add("Lunch Meat");
-        mImageUrls.add("https://www.godairyfree.org/wp-content/uploads/2017/11/fast-food-feature-2.jpg");
-        mNames.add("French fries");
-        mImageUrls.add("https://2q0p8d1c7z0l2s9xl3323ez3-wpengine.netdna-ssl.com/wp-content/uploads/2018/04/Ultimate-Tokyo-Japan-Food-Guide-Featured.png");
-        mNames.add("海鮮丼");
-        mImageUrls.add("https://assets3.thrillist.com/v1/image/2797371/size/tmg-article_default_mobile.jpg");
-        mNames.add("Hamberger");
-        mImageUrls.add("https://ichef.bbci.co.uk/food/ic/food_16x9_832/recipes/one_pot_chorizo_and_15611_16x9.jpg");
-        mNames.add("noodles");
-        mImageUrls.add("https://www.bbcgoodfood.com/sites/default/files/guide/guide-image/2018/06/chicken-wings-main.jpg");
-        mNames.add("Chicken Wings");
-        mImageUrls.add("https://assets3.thrillist.com/v1/image/2815308/size/tmg-article_default_mobile.jpg");
-        mNames.add("Fried Chiken");
-        mImageUrls.add("https://wi-images.condecdn.net/image/V1RQ0lZ8pgQ/crop/3240/f/istock-459025743.jpg");
-        mNames.add("Lunch Meat");
-        mImageUrls.add("https://www.godairyfree.org/wp-content/uploads/2017/11/fast-food-feature-2.jpg");
-        mNames.add("French fries");
-        mImageUrls.add("https://2q0p8d1c7z0l2s9xl3323ez3-wpengine.netdna-ssl.com/wp-content/uploads/2018/04/Ultimate-Tokyo-Japan-Food-Guide-Featured.png");
-        mNames.add("海鮮丼");
+        getPhotoName();
         initRecyclerView();
     }
 
@@ -111,20 +88,8 @@ public class Menu extends AppCompatActivity {
             @Override
             public void run() {
                 //Here to process your JSON, Leader.
-                mImageUrls.add("https://assets3.thrillist.com/v1/image/2797371/size/tmg-article_default_mobile.jpg");
-                mNames.add("Hamberger");
-                mImageUrls.add("https://ichef.bbci.co.uk/food/ic/food_16x9_832/recipes/one_pot_chorizo_and_15611_16x9.jpg");
-                mNames.add("noodles");
-                mImageUrls.add("https://www.bbcgoodfood.com/sites/default/files/guide/guide-image/2018/06/chicken-wings-main.jpg");
-                mNames.add("Chicken Wings");
-                mImageUrls.add("https://assets3.thrillist.com/v1/image/2815308/size/tmg-article_default_mobile.jpg");
-                mNames.add("Fried Chiken");
-                mImageUrls.add("https://wi-images.condecdn.net/image/V1RQ0lZ8pgQ/crop/3240/f/istock-459025743.jpg");
-                mNames.add("Lunch Meat");
-                mImageUrls.add("https://www.godairyfree.org/wp-content/uploads/2017/11/fast-food-feature-2.jpg");
-                mNames.add("French fries");
-                mImageUrls.add("https://2q0p8d1c7z0l2s9xl3323ez3-wpengine.netdna-ssl.com/wp-content/uploads/2018/04/Ultimate-Tokyo-Japan-Food-Guide-Featured.png");
-                mNames.add("海鮮丼");
+                getPhotoName();
+
                 staggeredRecyclerViewAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
             }
@@ -142,7 +107,7 @@ public class Menu extends AppCompatActivity {
         final StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(NUM_COLUMNS, LinearLayoutManager.VERTICAL);
         //forbid swap side of two columns
-        //staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
 
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.getItemAnimator().setChangeDuration(0);
@@ -167,7 +132,7 @@ public class Menu extends AppCompatActivity {
                 if(firstVisibleItem != null && firstVisibleItem.length > 0) {
                     scrollOutItems = firstVisibleItem[0];
                 }
-                if(isScrolling && (currentItems + scrollOutItems == totalItems)){
+                if(isScrolling && (currentItems + scrollOutItems > totalItems)){
                     //data fetch here, leader
                     isScrolling=false;
                     loadmoreBitmaps();
@@ -195,7 +160,7 @@ public class Menu extends AppCompatActivity {
     }
 
     private void getPhotoName() {
-        String getUrl = "http://192.168.2.102:8000/get";
+        String getUrl = "http://192.168.1.45:8000/getrecipe";
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(getUrl)
@@ -213,22 +178,40 @@ public class Menu extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 // final String data = response.body().string();
                 System.out.println("onResponse");
-                Message msg = handler.obtainMessage();
-                msg.obj = response.body().string();
-                handler.sendMessage(msg);
+                //Message msg = handler.obtainMessage();
+                //msg.obj = response.body().string();
+               // handler.sendMessage(msg);
+
+                String m = response.body().string();
+                Map<String,List<String>> map = (Map)JSONObject.parse(m);
+                name = map.get("name");
+                picurl = map.get("image");
+                lock = false;
             }
         });
+        while (lock) {System.out.println("locked");}
+        System.out.println("UnLock");
+        Iterator it_name = name.iterator();
+        Iterator it_url = picurl.iterator();
+        while(it_name.hasNext() && it_url.hasNext()) {
+            String name = (String)it_name.next();
+            String url = (String)it_url.next();
+            mImageUrls.add(url);
+            mNames.add(name);
+            lock = true;
+        }
     }
     Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            String m = (String) msg.obj;
-            Map<String,String> map = (Map)JSONObject.parse(m);
-            String name = map.get("recipe_name");
-            String picurl = map.get("img_html");
+            lock = false;
             try {
-                Picasso.get().load(picurl).into(imageView);
-                recipeName.setText(name);
+                String m = (String) msg.obj;
+                Map<String,List<String>> map = (Map)JSONObject.parse(m);
+                name = map.get("name");
+                picurl = map.get("image");
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
