@@ -18,12 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".Recipe">
+            <intent-filter>
+                <action android:name="android.intent.action.recipe" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Menu"></activity>
         <activity
             android:name=".Register"></activity>
-        <activity
-            android:name=".Recipe"></activity>
         <activity
             android:name=".List"></activity>
         <activity

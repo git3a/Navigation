@@ -35,6 +35,12 @@ public class Menu extends AppCompatActivity {
     private static final int NUM_COLUMNS = 2;
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<String> mNames = new ArrayList<>();
+    private ArrayList<Integer> mIds = new ArrayList<>();
+
+    private List<String> name = new ArrayList<String>();
+    private  List<String> picurl = new ArrayList<String>();
+    private  List<Integer> id = new ArrayList<>();
+
     private TextView mTextMessage;
     private BottomNavigationView navigation;
     private TextView recipeName;
@@ -65,8 +71,7 @@ public class Menu extends AppCompatActivity {
             return false;
         }
     };
-    private List<String> name = new ArrayList<String>();
-    private  List<String> picurl = new ArrayList<String>();
+
 
     private boolean lock = true; // thread lock
     @Override
@@ -106,7 +111,7 @@ public class Menu extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         progressBar = (ProgressBar) findViewById(R.id.progress);
         staggeredRecyclerViewAdapter =
-                new StaggeredRecyclerViewAdapter(this,mNames,mImageUrls);
+                new StaggeredRecyclerViewAdapter(this,mNames,mImageUrls,mIds);
 
         //perfectly solve the blink problem
         staggeredRecyclerViewAdapter.setHasStableIds(true);
@@ -146,24 +151,6 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
-    private void loadHome() {
-        //setContentView(R.layout.activity_home);
-        //mTextMessage = (TextView) findViewById(R.id.message);
-        //recipeName = findViewById(R.id.textView1);
-        //navigation = findViewById(R.id.navigation);
-        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        imageView = findViewById(R.id.imageView1);
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Menu.this, Recipe.class);
-//                startActivity(intent);
-//                System.out.println("click pic");
-//            }
-//        });
-        //getPhotoName();
-        System.out.println("load home");
-    }
 
     private void getPhotoName() {
         String getUrl = "http://192.168.1.45:8000/getrecipe";
@@ -192,6 +179,7 @@ public class Menu extends AppCompatActivity {
                 Map<String,List> map = (Map)JSONObject.parse(m);
                 name = map.get("name");
                 picurl = map.get("image");
+                id = map.get("id");
                 lock = false;
             }
         });
@@ -199,11 +187,15 @@ public class Menu extends AppCompatActivity {
         System.out.println("UnLock");
         Iterator it_name = name.iterator();
         Iterator it_url = picurl.iterator();
+        Iterator it_id = id.iterator();
         while(it_name.hasNext() && it_url.hasNext()) {
             String name = (String)it_name.next();
             String url = (String)it_url.next();
+            Integer id = (Integer)it_id.next();
+
             mImageUrls.add(url);
             mNames.add(name);
+            mIds.add(id);
             lock = true;
         }
     }

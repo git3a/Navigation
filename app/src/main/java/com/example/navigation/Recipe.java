@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -95,12 +96,18 @@ public class  Recipe extends AppCompatActivity {
     }
 
     private void getRecipeData() {
-        String getUrl = "http://192.168.2.102:8000/get";
+        Request.Builder reqBuild = new Request.Builder().get();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.45:8000/getrecipebyid")
+                .newBuilder();
+        Integer id = 0;
+        final Intent intent = getIntent();
+        id = intent.getIntExtra("id", 0);
+        urlBuilder.addQueryParameter("id", id.toString());
+
         OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(getUrl)
-                .get()
-                .build();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
@@ -124,11 +131,11 @@ public class  Recipe extends AppCompatActivity {
         public boolean handleMessage(Message msg) {
             String m = (String) msg.obj;
             Map<String,String> map = (Map)JSONObject.parse(m);
-            String name = map.get("recipe_name");
-            String picurl = map.get("img_html");
-            String ingredient_names[] = map.get("ingredient_name").split("\n");
-            String ingredient_quantitys[] = map.get("ingredient_quantity").split("\n");
-            String steps[] = map.get("setp_text").split("\n");
+            String name = map.get("name");
+            String picurl = map.get("image");
+            String ingredient_names[] = map.get("material").split("\n");
+            String ingredient_quantitys[] = map.get("amount").split("\n");
+            String steps[] = map.get("step").split("\n");
 
             try {
                 Picasso.get().load(picurl).into(imageView);

@@ -1,6 +1,7 @@
 package com.example.navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -24,11 +25,13 @@ public class StaggeredRecyclerViewAdapter extends RecyclerView.Adapter<Staggered
 
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<Integer> mIds;
     private Context mContext;
 
-    public StaggeredRecyclerViewAdapter(Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls) {
+    public StaggeredRecyclerViewAdapter(Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls, ArrayList<Integer> mIds) {
         this.mNames = mNames;
         this.mImageUrls = mImageUrls;
+        this.mIds = mIds;
         this.mContext = mContext;
     }
 
@@ -57,9 +60,14 @@ public class StaggeredRecyclerViewAdapter extends RecyclerView.Adapter<Staggered
             @Override
             public void onClick(View view) {
                 Log.d(TAG,"onClick: clicked on: " + mNames.get(position));
+                Log.d(TAG,"onClick: id: " + mIds.get(position));
                 Toast.makeText(mContext,mNames.get(position),Toast.LENGTH_SHORT).show();
+                Integer id = mIds.get(position);
                 //Here to jump to other activity.
-                //setContentView(R.layout.activity_recipe);
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.recipe");
+                intent.putExtra("id",id);
+                view.getContext().startActivity(intent);
             }
         });
     }
