@@ -1,6 +1,7 @@
 package com.example.navigation;
 
 import java.util.*;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,25 +46,28 @@ public class Menu extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    loadHome();
+                    Intent intent = new Intent(Menu.this, Menu.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_favorite:
-                    //mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    //mTextMessage.setText(R.string.title_notifications);
-                    return true;
-                case R.id.navigation_person:
-                    Intent intent = new Intent(Menu.this, My.class);
+                    intent = new Intent(Menu.this, Favorite.class);
                     startActivity(intent);
-                    //mTextMessage.setText(R.string.title_notifications);
+                    return true;
+                case R.id.navigation_list:
+                    intent = new Intent(Menu.this, List.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_my:
+                    intent = new Intent(Menu.this, My.class);
+                    startActivity(intent);
                     return true;
             }
             return false;
         }
     };
-    private List<String> name = new ArrayList<>();
-    private  List<String> picurl = new ArrayList<>();
+    private List<String> name = new ArrayList<String>();
+    private  List<String> picurl = new ArrayList<String>();
+
     private boolean lock = true; // thread lock
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +189,7 @@ public class Menu extends AppCompatActivity {
                // handler.sendMessage(msg);
 
                 String m = response.body().string();
-                Map<String,List<String>> map = (Map)JSONObject.parse(m);
+                Map<String,List> map = (Map)JSONObject.parse(m);
                 name = map.get("name");
                 picurl = map.get("image");
                 lock = false;

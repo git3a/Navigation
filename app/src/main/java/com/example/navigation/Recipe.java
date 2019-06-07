@@ -49,13 +49,16 @@ public class  Recipe extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_favorite:
-
+                    intent = new Intent(Recipe.this, Favorite.class);
+                    startActivity(intent);
                     return true;
-                case R.id.navigation_notifications:
-
+                case R.id.navigation_list:
+                    intent = new Intent(Recipe.this, List.class);
+                    startActivity(intent);
                     return true;
-                case R.id.navigation_person:
-
+                case R.id.navigation_my:
+                    intent = new Intent(Recipe.this, My.class);
+                    startActivity(intent);
                     return true;
             }
             return false;

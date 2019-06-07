@@ -24,6 +24,12 @@
             android:name=".Register"></activity>
         <activity
             android:name=".Recipe"></activity>
+        <activity
+            android:name=".List"></activity>
+        <activity
+            android:name=".Favorite"></activity>
+        <activity
+            android:name=".My"></activity>
     </application>
 
 </manifest>

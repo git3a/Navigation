@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class My extends AppCompatActivity {
+public class List extends AppCompatActivity {
     private BottomNavigationView navigation;
     private TextView recipeName;
     private ImageView imageView;
@@ -20,19 +20,19 @@ public class My extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    Intent intent = new Intent(My.this, Menu.class);
+                    Intent intent = new Intent(List.this, Menu.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_favorite:
-                    intent = new Intent(My.this, Favorite.class);
+                    intent = new Intent(List.this, Favorite.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(My.this, List.class);
+                    intent = new Intent(List.this, List.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_my:
-                    intent = new Intent(My.this, My.class);
+                    intent = new Intent(List.this, My.class);
                     startActivity(intent);
                     return true;
             }
@@ -41,7 +41,7 @@ public class My extends AppCompatActivity {
     };
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_list);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadRecipe();
