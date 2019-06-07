@@ -24,8 +24,7 @@ public class Favorite extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_favorite:
-                    intent = new Intent(Favorite.this, Favorite.class);
-                    startActivity(intent);
+
                     return true;
                 case R.id.navigation_list:
                     intent = new Intent(Favorite.this, List.class);

@@ -28,8 +28,7 @@ public class List extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(List.this, List.class);
-                    startActivity(intent);
+
                     return true;
                 case R.id.navigation_my:
                     intent = new Intent(List.this, My.class);

@@ -29,7 +29,9 @@
         </activity>
 
         <activity
-            android:name=".Menu"></activity>
+            android:name=".Menu"
+            android:launchMode = "singleInstance">
+        </activity>
         <activity
             android:name=".Register"></activity>
         <activity

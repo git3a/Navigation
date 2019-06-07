@@ -52,11 +52,10 @@ public class Menu extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    Intent intent = new Intent(Menu.this, Menu.class);
-                    startActivity(intent);
+
                     return true;
                 case R.id.navigation_favorite:
-                    intent = new Intent(Menu.this, Favorite.class);
+                    Intent intent = new Intent(Menu.this, Favorite.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:

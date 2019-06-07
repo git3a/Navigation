@@ -36,8 +36,7 @@ public class My extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_my:
-                    intent = new Intent(My.this, My.class);
-                    startActivity(intent);
+
                     return true;
             }
             return false;
