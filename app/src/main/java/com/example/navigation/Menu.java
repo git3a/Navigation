@@ -152,7 +152,7 @@ public class Menu extends AppCompatActivity {
     }
 
     private void getPhotoName() {
-        String getUrl = "http://192.168.1.45:8000/getrecipe";
+        String getUrl = "http://35.188.105.219/back_end/getrecipe";
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(getUrl)
