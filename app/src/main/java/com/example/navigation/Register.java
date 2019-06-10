@@ -2,18 +2,13 @@ package com.example.navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import java.io.*;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.regex.Pattern;
 
 import okhttp3.*;
@@ -36,7 +31,7 @@ public class Register extends AppCompatActivity {
         b1 = (Button) findViewById(R.id.button1);
         b1.setOnClickListener(new MyClick());
         u1 = (EditText) findViewById(R.id.username);
-        em = (EditText) findViewById(R.id.email);
+        em = (EditText) findViewById(R.id.name);
         p1 = (EditText) findViewById(R.id.password1);
         p2 = (EditText) findViewById(R.id.password2);
         er = (TextView) findViewById(R.id.mess);

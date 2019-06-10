@@ -75,7 +75,7 @@ public class  Recipe extends AppCompatActivity {
     }
     private void loadRecipe() {
 
-        recipeName = findViewById(R.id.name);
+        recipeName = findViewById(R.id.recipename);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         imageView = findViewById(R.id.image1);

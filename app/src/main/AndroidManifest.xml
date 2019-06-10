@@ -39,7 +39,8 @@
         <activity
             android:name=".Favorite"></activity>
         <activity
-            android:name=".My"></activity>
+            android:name=".My"
+            android:launchMode = "singleInstance"></activity>
     </application>
 
 </manifest>

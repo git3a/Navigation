@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
         String spassword = sharedPreferences.getString("password","");
         if (susername.equals("") && spassword.equals("")) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", "q");
-            editor.putString("password", "123");
+            editor.putString("username", _username);
+            editor.putString("password", _password);
             editor.commit();
         }
     }
