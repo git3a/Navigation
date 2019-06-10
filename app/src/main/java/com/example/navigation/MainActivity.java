@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private String _password = "";
 
     private SharedPreferences sharedPreferences ;
-
+    private boolean lock = true; // thread lock
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 err.setVisibility(View.VISIBLE);
                 return;
             }
-            //getUserData(user);
-            _username = "q";
-            _password = "123";
+            getUserData(user);
 
             String mess = "";
             if(!_username.equals(user)) {
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void getUserData(String uname) {
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.2.102:8000/getuser")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getuser")
                 .newBuilder();
         urlBuilder.addQueryParameter("user", uname);
 
@@ -136,16 +134,15 @@ public class MainActivity extends AppCompatActivity {
                 // final String data = response.body().string();
                 System.out.println("onResponse");
 
-
                 String m = response.body().string();
                 Map<String,String> map = (Map) JSONObject.parse(m);
-                _username = map.get("username");
-                _password = map.get("password");
-
+                _username = map.get("user");
+                _password = map.get("pwd");
+                lock = false;
             }
 
         });
-        while(_username == "");
+        while (lock) {System.out.println("locked");}
     }
 
     private void userUpdate() {
