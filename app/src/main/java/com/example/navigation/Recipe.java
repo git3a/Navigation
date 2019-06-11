@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class  Recipe extends AppCompatActivity {
     private TextView ingredient_quantity3;
     private TextView step1;
     private TextView step2;
-    private TextView step3;
+    private Button step3;
 
     private TextView time;
     private Button countdown;
@@ -57,7 +58,7 @@ public class  Recipe extends AppCompatActivity {
     private TimerTask task = null;
     private Vibrator vibrator;
     private MediaPlayer player;
-
+    ProgressBar progressBar;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -90,18 +91,19 @@ public class  Recipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         //mTextMessage = (TextView) findViewById(R.id.message);
-        time = findViewById(R.id.time);
-        time.setText(i.toString());
-        countdown = findViewById(R.id.countdown);
-        countdown.setOnClickListener(new View.OnClickListener() {
+
+        step3 = findViewById(R.id.step3);
+        step3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startTime();
             }
         });
-
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setScaleY(10);
         vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         player = MediaPlayer.create(Recipe.this, R.raw.ok);
+
         loadRecipe();
     }
     private void loadRecipe() {
@@ -120,7 +122,7 @@ public class  Recipe extends AppCompatActivity {
 
         step1 = findViewById(R.id.step1);
         step2 = findViewById(R.id.step2);
-        step3 = findViewById(R.id.step3);
+
 
         getRecipeData();
         System.out.println("getRecipeData");
@@ -189,7 +191,8 @@ public class  Recipe extends AppCompatActivity {
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            time.setText(msg.arg1 + "");
+            //time.setText(msg.arg1 + "");
+            progressBar.setProgress(msg.arg1*10);
             startTime();
         };
     };
