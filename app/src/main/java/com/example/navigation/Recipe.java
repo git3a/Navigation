@@ -10,9 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Button;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -24,6 +25,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import com.alibaba.fastjson.*;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import android.os.Vibrator;
+import android.app.Activity;
+import android.app.Service;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+
 
 public class  Recipe extends AppCompatActivity {
 
@@ -39,6 +49,15 @@ public class  Recipe extends AppCompatActivity {
     private TextView step1;
     private TextView step2;
     private TextView step3;
+
+    private TextView time;
+    private Button countdown;
+    private Integer i = 10;
+    private Timer timer = null;
+    private TimerTask task = null;
+    private Vibrator vibrator;
+    private MediaPlayer player;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -71,6 +90,18 @@ public class  Recipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         //mTextMessage = (TextView) findViewById(R.id.message);
+        time = findViewById(R.id.time);
+        time.setText(i.toString());
+        countdown = findViewById(R.id.countdown);
+        countdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTime();
+            }
+        });
+
+        vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+        player = MediaPlayer.create(Recipe.this, R.raw.ok);
         loadRecipe();
     }
     private void loadRecipe() {
@@ -136,7 +167,7 @@ public class  Recipe extends AppCompatActivity {
             String ingredient_names[] = map.get("material").split("\n");
             String ingredient_quantitys[] = map.get("amount").split("\n");
             String steps[] = map.get("step").split("\n");
-
+            String time[] = map.get("time").split("\n");
             try {
                 Picasso.get().load(picurl).into(imageView);
                 recipeName.setText(name);
@@ -155,5 +186,37 @@ public class  Recipe extends AppCompatActivity {
             return false;
         }
     });
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            time.setText(msg.arg1 + "");
+            startTime();
+        };
+    };
+
+    public void startTime() {
+        timer = new Timer();
+        task = new TimerTask() {
+
+            @Override
+            public void run() {
+                if (i > 0) {   //加入判断不能小于0
+                    i--;
+                    Message message = mHandler.obtainMessage();
+                    message.arg1 = i;
+                    mHandler.sendMessage(message);
+                } else if (i == 0) {
+                    vibrator.vibrate(2000);
+                    player.start();
+                    i--;
+                }
+            }
+        };
+        timer.schedule(task, 1000);
+    }
+
+    public void stopTime(){
+        timer.cancel();
+    }
 
 }
