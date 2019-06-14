@@ -38,15 +38,16 @@
                     android:id="@+id/image1"
                     android:layout_width="186dp"
                     android:layout_height="133dp"
+                    android:background="@color/beige"
                     android:visibility="visible"
                     app:srcCompat="@drawable/yuan"
                     tools:srcCompat="@drawable/yuan" />
 
                 <TextView
                     android:id="@+id/name"
-                    android:layout_width="159dp"
-                    android:layout_height="59dp"
-                    android:text="q"
+                    android:layout_width="91dp"
+                    android:layout_height="wrap_content"
+                    android:text="test"
                     android:textSize="36sp"
                     android:visibility="visible" />
 
@@ -127,6 +128,7 @@
         android:id="@+id/logOutButton"
         android:layout_width="421dp"
         android:layout_height="58dp"
+        android:background="@color/beige"
         android:text="LogOut" />
 
     <android.support.design.widget.BottomNavigationView

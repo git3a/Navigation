@@ -9,13 +9,14 @@
     <RelativeLayout
         android:id="@+id/login_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="471dp"
         android:layout_below="@+id/message"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginTop="195dp"
         android:layout_marginRight="40dp"
-        android:gravity="center" >
+        android:layout_marginBottom="10dp"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/mess"
@@ -25,18 +26,19 @@
             android:layout_marginTop="25dp"
             android:gravity="center"
             android:text="Login"
-            android:textColor="#C9C9C9"
+            android:textColor="@color/beige"
             android:textSize="40sp"
             android:visibility="visible" />
+
         <FrameLayout
             android:id="@+id/username_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_below="@id/mess"
-            android:gravity="center" >
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center">
 
             <EditText
                 android:id="@+id/username"
@@ -46,7 +48,7 @@
                 android:maxLength="20"
                 android:paddingLeft="55dp"
                 android:paddingRight="60dp"
-                android:textColor="#8B8B7A" >
+                android:textColor="#8B8B7A">
 
             </EditText>
 
@@ -74,11 +76,11 @@
             android:id="@+id/usercode_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_below="@id/username_layout"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="6dp"
-            android:gravity="center" >
+            android:layout_marginRight="20dp"
+            android:gravity="center">
 
             <EditText
                 android:id="@+id/password"
@@ -104,8 +106,8 @@
             android:layout_height="60dp"
             android:layout_below="@id/usercode_layout"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
             android:gravity="center"
             android:maxWidth="40dp"
             android:minHeight="50dp"
@@ -116,12 +118,12 @@
             android:id="@+id/reg"
             android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/login"
-            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
             android:maxWidth="40dp"
             android:minHeight="50dp"
             android:text="新規登録"
@@ -129,17 +131,25 @@
 
     </RelativeLayout>
 
+
     <TextView
         android:id="@+id/message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="18dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="ログイン"
         android:textColor="#CD0000"
         android:textSize="30sp"
         android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="227dp"
+        app:srcCompat="@drawable/pic" />
 
 </RelativeLayout>

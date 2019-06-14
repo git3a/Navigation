@@ -30,9 +30,7 @@ import com.alibaba.fastjson.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.os.Vibrator;
-import android.app.Activity;
 import android.app.Service;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 
@@ -47,6 +45,10 @@ public class  Recipe extends AppCompatActivity {
     private TextView ingredient_quantity2;
     private TextView ingredient_name3;
     private TextView ingredient_quantity3;
+    private TextView ingredient_name4;
+    private TextView ingredient_quantity4;
+    private TextView ingredient_name5;
+    private TextView ingredient_quantity5;
     private TextView step1;
     private TextView step2;
     private Button step3;
@@ -117,8 +119,13 @@ public class  Recipe extends AppCompatActivity {
         ingredient_quantity1 = findViewById(R.id.mt_quan1);
         ingredient_name2 = findViewById(R.id.mt_name2);
         ingredient_quantity2 = findViewById(R.id.mt_quan2);
-        ingredient_name3 = findViewById(R.id.mt_name3);
-        ingredient_quantity3 = findViewById(R.id.mt_quan3);
+        ingredient_name3 = findViewById(R.id.mt_name4);
+        ingredient_quantity3 = findViewById(R.id.mt_quan4);
+        ingredient_name4 = findViewById(R.id.mt_name5);
+        ingredient_quantity4 = findViewById(R.id.mt_quan5);
+        ingredient_name5 = findViewById(R.id.mt_name6);
+        ingredient_quantity5 = findViewById(R.id.mt_quan6);
+
 
         step1 = findViewById(R.id.step1);
         step2 = findViewById(R.id.step2);
@@ -179,6 +186,10 @@ public class  Recipe extends AppCompatActivity {
                 ingredient_quantity2.setText(ingredient_quantitys[1]);
                 ingredient_name3.setText(ingredient_names[2]);
                 ingredient_quantity3.setText(ingredient_quantitys[2]);
+                ingredient_name4.setText(ingredient_names[3]);
+                ingredient_quantity4.setText(ingredient_quantitys[3]);
+                ingredient_name5.setText(ingredient_names[4]);
+                ingredient_quantity5.setText(ingredient_quantitys[4]);
                 step1.setText(steps[0]);
                 step2.setText(steps[1]);
                 step3.setText(steps[2]);
