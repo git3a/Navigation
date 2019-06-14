@@ -74,7 +74,11 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             getUserData(user);
-
+            if (_username==null) {
+                err.setText("ユーザが存在しません");
+                err.setVisibility(View.VISIBLE);
+                return;
+            }
             String mess = "";
             if(!_username.equals(user)) {
                 mess += " ユーザが存在しません ";
