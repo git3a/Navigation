@@ -42,6 +42,8 @@
         <activity
             android:name=".My"
             android:launchMode = "singleInstance"></activity>
+        <activity android:name=".Search"></activity>
+
     </application>
 
 </manifest>
