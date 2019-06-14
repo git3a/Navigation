@@ -55,11 +55,11 @@ public class Menu extends AppCompatActivity {
 
                     return true;
                 case R.id.navigation_favorite:
-                    Intent intent = new Intent(Menu.this, Search.class);
+                    Intent intent = new Intent(Menu.this, Favorite.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(Menu.this, List.class);
+                    intent = new Intent(Menu.this, Search.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_my:
