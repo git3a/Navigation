@@ -97,12 +97,6 @@ public class Menu extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
     private void initImageBitmaps(){
         Log.d(TAG,"initImageBitmaps: preparing bitmaps.");
         //Here to process your JSON, Leader.
