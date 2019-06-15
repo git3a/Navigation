@@ -39,7 +39,7 @@
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:hint="·レシピを入力ください"
+        android:hint="レシピを入力ください"
         android:imeOptions="actionSearch"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
