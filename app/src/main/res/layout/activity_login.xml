@@ -9,11 +9,11 @@
     <RelativeLayout
         android:id="@+id/login_layout"
         android:layout_width="wrap_content"
-        android:layout_height="471dp"
+        android:layout_height="431dp"
         android:layout_below="@+id/message"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="195dp"
+        android:layout_marginTop="-5dp"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="10dp"
         android:gravity="center">
@@ -25,8 +25,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:text="Login"
-            android:textColor="@color/beige"
+            android:text="HaoChi"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="40sp"
             android:visibility="visible" />
 
@@ -138,8 +138,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginTop="210dp"
         android:gravity="center"
         android:text="ログイン"
         android:textColor="#CD0000"
@@ -147,9 +147,9 @@
         android:visibility="invisible" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="227dp"
+        android:layout_height="197dp"
         app:srcCompat="@drawable/pic" />
 
 </RelativeLayout>

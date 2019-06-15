@@ -61,7 +61,7 @@ public class Favorite extends AppCompatActivity {
 
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(Favorite.this, Search.class);
+                    intent = new Intent(Favorite.this, List.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_my:

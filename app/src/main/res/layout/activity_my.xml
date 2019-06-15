@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:background="@color/beige"
+    android:background="@color/colorToolbar"
     android:gravity="bottom"
     android:orientation="vertical">
 
@@ -38,7 +38,7 @@
                     android:id="@+id/image1"
                     android:layout_width="wrap_content"
                     android:layout_height="128dp"
-                    android:background="@color/beige"
+                    android:background="@color/colorToolbar"
                     android:visibility="visible"
                     app:srcCompat="@drawable/yuan"
                     tools:srcCompat="@drawable/yuan" />
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@color/beige"
+                android:background="@color/colorToolbar"
                 android:padding="10dp">
 
                 <ImageView
@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@color/beige"
+                android:background="@color/colorToolbar"
                 android:padding="10dp">
 
                 <ImageView
@@ -133,7 +133,7 @@
         android:id="@+id/logOutButton"
         android:layout_width="421dp"
         android:layout_height="58dp"
-        android:background="@color/beige"
+        android:background="@color/colorToolbar"
         android:text="LogOut"
         android:textSize="18sp" />
 
@@ -141,7 +141,7 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="66dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/beige"
         android:visibility="visible"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
