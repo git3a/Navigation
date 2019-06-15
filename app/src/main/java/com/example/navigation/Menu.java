@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ public class Menu extends AppCompatActivity {
     private BottomNavigationView navigation;
     private TextView recipeName;
     private ImageView imageView;
+    private EditText mEditSearch;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -81,9 +84,25 @@ public class Menu extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //mTextMessage = (TextView) findViewById(R.id.message);
         initImageBitmaps();
-
+        mEditSearch = (EditText)findViewById(R.id.edit_search);
+        mEditSearch.setFocusable(false);
+        mEditSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Menu.this,Search.class);
+                startActivity(intent);
+            }
+        });
         //loadHome();
     }
+
+
+
+
+
+
+
+
     private void initImageBitmaps(){
         Log.d(TAG,"initImageBitmaps: preparing bitmaps.");
         //Here to process your JSON, Leader.

@@ -37,7 +37,13 @@
             android:drawableRight="@drawable/ic_home_black_24dp"
             android:gravity="center"
             android:textSize="18sp" />
+
+
+
+
     </LinearLayout>
+
+
 
     <ScrollView
         android:layout_width="match_parent"
