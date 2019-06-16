@@ -21,10 +21,12 @@ public class List extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     Intent intent = new Intent(List.this, Menu.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_favorite:
                     intent = new Intent(List.this, Favorite.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
@@ -32,6 +34,7 @@ public class List extends AppCompatActivity {
                     return true;
                 case R.id.navigation_my:
                     intent = new Intent(List.this, My.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
             }

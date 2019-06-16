@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     class ReClick implements View.OnClickListener {
         public void onClick(View view) {
             Intent intent = new Intent(MainActivity.this, Register.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
     }
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         String spassword = sharedPreferences.getString("password","");
         if (!susername.equals("") && !spassword.equals("")) {
             Intent intent = new Intent(MainActivity.this, Menu.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
 

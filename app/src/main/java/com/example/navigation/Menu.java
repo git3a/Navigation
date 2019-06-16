@@ -59,14 +59,17 @@ public class Menu extends AppCompatActivity {
                     return true;
                 case R.id.navigation_favorite:
                     Intent intent = new Intent(Menu.this, Favorite.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
                     intent = new Intent(Menu.this, com.example.navigation.List.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_my:
                     intent = new Intent(Menu.this, My.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
             }

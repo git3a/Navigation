@@ -55,6 +55,7 @@ public class Favorite extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     Intent intent = new Intent(Favorite.this, Menu.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_favorite:
@@ -62,10 +63,12 @@ public class Favorite extends AppCompatActivity {
                     return true;
                 case R.id.navigation_list:
                     intent = new Intent(Favorite.this, List.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_my:
                     intent = new Intent(Favorite.this, My.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
             }
