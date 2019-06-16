@@ -145,7 +145,13 @@ public class Search extends AppCompatActivity{
                              .hideSoftInputFromWindow(mEditSearch.getWindowToken() , InputMethodManager.HIDE_NOT_ALWAYS);
 
                     //保存搜索记录
-                    insertRecords(mEditSearch.getText().toString().trim());
+                    String searchWord = mEditSearch.getText().toString().trim();
+                    insertRecords(searchWord);
+
+                    Intent intent = new Intent(Search.this, SearchResult.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    intent.putExtra("searchWord", searchWord);
+                    startActivity(intent);
                 }
 
                 return false;
@@ -191,7 +197,9 @@ public class Search extends AppCompatActivity{
                 String username = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
                 String password = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
                 Log.e("Skylark ", username + "---" + password);
-
+                Intent intent = new Intent(Search.this, SearchResult.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
 
             }
         });

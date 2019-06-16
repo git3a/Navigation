@@ -14,9 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -32,7 +30,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class Favorite extends AppCompatActivity {
+public class SearchResult extends AppCompatActivity {
     private BottomNavigationView navigation;
     Boolean isScrolling = false;
     ProgressBar progressBar;
@@ -55,20 +53,22 @@ public class Favorite extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    Intent intent = new Intent(Favorite.this, Menu.class);
+                    Intent intent = new Intent(SearchResult.this, Menu.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_favorite:
-
+                    intent = new Intent(SearchResult.this, Favorite.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(Favorite.this, List.class);
+                    intent = new Intent(SearchResult.this, List.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_my:
-                    intent = new Intent(Favorite.this, My.class);
+                    intent = new Intent(SearchResult.this, My.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
@@ -80,7 +80,7 @@ public class Favorite extends AppCompatActivity {
     private boolean lock = true; // thread lock
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite);
+        setContentView(R.layout.activity_search_result);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         initImageBitmaps();
@@ -153,12 +153,19 @@ public class Favorite extends AppCompatActivity {
     }
 
     private void getPhotoName() {
-        String getUrl = "http://35.188.105.219/back_end/getrecipe";
+        String searchWord;
+        final Intent intent = getIntent();
+        searchWord = intent.getStringExtra("searchWord");
+
+        Request.Builder reqBuild = new Request.Builder().get();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyname")
+                .newBuilder();
+        urlBuilder.addQueryParameter("searchWord", searchWord);
+
         OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(getUrl)
-                .get()
-                .build();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override

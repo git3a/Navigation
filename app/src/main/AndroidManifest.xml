@@ -40,6 +40,9 @@
         <activity
             android:name=".Favorite"></activity>
         <activity
+            android:name=".SearchResult"></activity>
+
+        <activity
             android:name=".My"
             android:launchMode = "singleInstance"></activity>
         <activity android:name=".Search"></activity>
