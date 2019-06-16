@@ -65,6 +65,7 @@ public class StaggeredRecyclerViewAdapter extends RecyclerView.Adapter<Staggered
                 Integer id = mIds.get(position);
                 //Here to jump to other activity.
                 Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setAction("android.intent.action.recipe");
                 intent.putExtra("id",id);
                 view.getContext().startActivity(intent);

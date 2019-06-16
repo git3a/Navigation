@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 err.setVisibility(view.VISIBLE);
 
                 Intent intent = new Intent(MainActivity.this, Menu.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
                 //return ;
