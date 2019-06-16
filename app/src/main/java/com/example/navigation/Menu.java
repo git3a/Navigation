@@ -85,6 +85,7 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_home);
         //mTextMessage = (TextView) findViewById(R.id.message);
         initImageBitmaps();
         mEditSearch = (EditText)findViewById(R.id.edit_search);
@@ -99,7 +100,10 @@ public class Menu extends AppCompatActivity {
         });
         //loadHome();
     }
-
+    protected void onStart() {
+        super.onStart();
+        navigation.setSelectedItemId(R.id.navigation_home);
+    }
 
     private void initImageBitmaps(){
         Log.d(TAG,"initImageBitmaps: preparing bitmaps.");

@@ -46,6 +46,7 @@ public class List extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_list);
         loadRecipe();
     }
     private void loadRecipe() {

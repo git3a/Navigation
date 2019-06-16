@@ -83,6 +83,7 @@ public class Favorite extends AppCompatActivity {
         setContentView(R.layout.activity_favorite);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_favorite);
         initImageBitmaps();
     }
     private void initImageBitmaps(){

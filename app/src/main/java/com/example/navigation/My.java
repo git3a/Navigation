@@ -67,6 +67,7 @@ public class My extends AppCompatActivity {
         setContentView(R.layout.activity_my);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_my);
         logout = findViewById(R.id.logOutButton);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +87,10 @@ public class My extends AppCompatActivity {
         textname.setText(name);
         textemail.setText(email);
     }
-
+    protected void onStart() {
+        super.onStart();
+        navigation.setSelectedItemId(R.id.navigation_my);
+    }
     private void getUserData() {
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String susername = sharedPreferences.getString("username", "");
