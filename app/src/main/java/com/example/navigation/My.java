@@ -54,8 +54,8 @@ public class My extends AppCompatActivity {
     protected static Uri tempUri;
     private static final int CROP_SMALL_PICTURE = 2;
 
-    String pathToFile;
-    Uri photoUri;
+    private String filePath;
+    protected static Uri photoUri;
     private Bitmap mBitmap;
     private String picSavePath = Environment.getExternalStorageDirectory().getPath() + "/ChooseImage";
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -125,10 +125,20 @@ public class My extends AppCompatActivity {
         builder.setTitle("添加图片");
         String[] items = { "选择本地照片", "拍照" };
         builder.setNegativeButton("取消", null);
+        File temp = createPhotoFile(true);
+        tempUri = Uri.fromFile(temp);
+        File cameraFolder = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DCIM),"Camera");
+        String fileName = new SimpleDateFormat(
+                "ddHHmmss", Locale.US).format(new Date());
+        filePath = String.format("%s/%s.jpg", cameraFolder.getPath(),fileName);
+
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 switch (which) {
                     case CHOOSE_PICTURE: // 选择本地照片
                         Intent openAlbumIntent = new Intent( Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -140,28 +150,32 @@ public class My extends AppCompatActivity {
                     case TAKE_PICTURE: // 拍照
                         Intent openCameraIntent = new Intent(
                                 MediaStore.ACTION_IMAGE_CAPTURE);
-                       if (openCameraIntent.resolveActivity(getPackageManager()) != null) {
-                           File file = createPhotoFile();
-                           if (file != null) {
-                               //pathToFile = file.getAbsolutePath();
-                               photoUri = Uri.fromFile(file);
-                               openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                               startActivityForResult(openCameraIntent, TAKE_PICTURE);
-                           }
-                       }
 
+                        File cameraFile = new File(filePath);
+                        photoUri = FileProvider.getUriForFile(
+                                My.this,
+                                getApplicationContext().getPackageName() + ".fileprovider",
+                                cameraFile);
+
+                        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                        startActivityForResult(openCameraIntent, TAKE_PICTURE);
 
                 }
             }
         });
         builder.show();
     }
-    private File  createPhotoFile() {
+    private File  createPhotoFile(boolean isCrop) {
         String name = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         File image = null;
+
         try {
-            image = File.createTempFile(name, ".jpg", storageDir);
+            if (isCrop)
+                image = File.createTempFile(name + "crop", ".jpg", storageDir);
+            else
+                image = File.createTempFile(name, ".jpg", storageDir);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -173,18 +187,15 @@ public class My extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case TAKE_PICTURE:
-                   // cutImage(photoUri); // 对图片进行裁剪处理
+                    //cutImage(photoUri); // 对图片进行裁剪处理
                     imageView.setImageURI(photoUri);
-
                     break;
                 case CHOOSE_PICTURE:
-                    //cutImage(data.getData()); // 对图片进行裁剪处理
-                    setImageToView(data);
-
+                    cutImage(data.getData()); // 对图片进行裁剪处理
                     break;
                 case CROP_SMALL_PICTURE:
                     if (data != null) {
-                        setImageToView(data); // 让刚才选择裁剪得到的图片显示在界面上
+                        setImageToView(); // 让刚才选择裁剪得到的图片显示在界面上
                     }
                     break;
             }
@@ -205,12 +216,14 @@ public class My extends AppCompatActivity {
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 150);
         intent.putExtra("outputY", 150);
-        intent.putExtra("return-data", true);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
-    protected void setImageToView(Intent data) {
-        Uri image = data.getData();
-        imageView.setImageURI(image);
+    protected void setImageToView() {
+
+        imageView.setImageURI(tempUri);
 
     }
     protected void onStart() {
