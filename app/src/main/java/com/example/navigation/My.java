@@ -151,11 +151,8 @@ public class My extends AppCompatActivity {
                         Intent openCameraIntent = new Intent(
                                 MediaStore.ACTION_IMAGE_CAPTURE);
 
-                        File cameraFile = new File(filePath);
-                        photoUri = FileProvider.getUriForFile(
-                                My.this,
-                                getApplicationContext().getPackageName() + ".fileprovider",
-                                cameraFile);
+                        File cameraFile = createPhotoFile(false);
+                        photoUri = Uri.fromFile(cameraFile);
 
                         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                         startActivityForResult(openCameraIntent, TAKE_PICTURE);
@@ -187,8 +184,8 @@ public class My extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    //cutImage(photoUri); // 对图片进行裁剪处理
-                    imageView.setImageURI(photoUri);
+                    cutImage(photoUri); // 对图片进行裁剪处理
+                    //imageView.setImageURI(photoUri);
                     break;
                 case CHOOSE_PICTURE:
                     cutImage(data.getData()); // 对图片进行裁剪处理
@@ -214,8 +211,8 @@ public class My extends AppCompatActivity {
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 150);
-        intent.putExtra("outputY", 150);
+        intent.putExtra("outputX", 1000);
+        intent.putExtra("outputY", 1000);
         intent.putExtra("return-data", false);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
