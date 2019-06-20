@@ -34,6 +34,11 @@ public class Menu extends AppCompatActivity {
     int currentItems,totalItems,scrollOutItems;
     private static final String TAG = "Menu";
     private static final int NUM_COLUMNS = 2;
+    //for recipeXML
+    private ArrayList<String> mIndex = new ArrayList<>();
+    private ArrayList<String> mInner = new ArrayList<>();
+
+    //for homeXML
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<Integer> mIds = new ArrayList<>();

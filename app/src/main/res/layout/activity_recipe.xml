@@ -5,7 +5,8 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Menu">
+    android:background="@color/beige"
+    tools:context=".Recipe">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -16,238 +17,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation" />
+        app:menu="@menu/navigation" >
 
-    <ScrollView
-        android:id="@+id/scroller1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    </android.support.design.widget.BottomNavigationView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:orientation="vertical">
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView_recipe"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="@id/navigation">
 
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/pic1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/recipename"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/ingredients"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="材料リスト" />
-
-            <TableLayout
-                android:id="@+id/marterial_table"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:stretchColumns="*">
-
-                <TableRow>
-                    <TextView
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/mt_quan1"
-                        android:id="@+id/mt_name1"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:text="お肉" />
-                    <TextView
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toRightOf="@+id/mt_name1"
-                        android:id="@+id/mt_quan1"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:text="2kg" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/mt_quan1"
-                        android:id="@+id/mt_name2"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:text="お肉" />
-                    <TextView
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toRightOf="@+id/mt_name1"
-                        android:id="@+id/mt_quan2"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:text="2kg" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/mt_quan1"
-                        android:id="@+id/mt_name4"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:text="お肉" />
-
-                    <TextView
-                        android:id="@+id/mt_quan4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:text="2kg"
-                        app:layout_constraintLeft_toRightOf="@id/mt_name4"
-                        app:layout_constraintRight_toRightOf="parent" />
-
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/mt_quan1"
-                        android:id="@+id/mt_name5"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:text="お肉" />
-                    <TextView
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toRightOf="@+id/mt_name1"
-                        android:id="@+id/mt_quan5"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:text="2kg" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/mt_quan1"
-                        android:id="@+id/mt_name6"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:text="お肉" />
-                    <TextView
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toRightOf="@+id/mt_name1"
-                        android:id="@+id/mt_quan6"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:text="2kg" />
-                </TableRow>
-            </TableLayout>
-            <TextView
-                android:id="@+id/steps"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="作り方" />
-
-            <TextView
-                android:id="@+id/title_step1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="ステップ１" />
-
-            <TextView
-                android:id="@+id/step1"
-                android:gravity="left"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="五分間焼いてください五分間焼いてください五分間焼いてください"
-                 />
-
-            <TextView
-                android:id="@+id/title_step2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="ステップ2" />
-
-            <TextView
-                android:id="@+id/step2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="五分間焼いてください五分間焼いてください五分間焼いてください" />
-
-            <TextView
-                android:id="@+id/title_step3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="ステップ3" />
-
-
-
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".MainActivity" >
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:layout_centerInParent="true"
-                    android:gravity="bottom">
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="#0086A0A3"
-                        android:max="100"
-                        android:progress="100"
-                        android:progressTint="#B1E9F0" />
-
-                    <Button
-                        android:id="@+id/step3"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_centerInParent="true"
-                        android:background="#00008577"
-                        android:text="" />
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </ScrollView>
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>

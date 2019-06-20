@@ -46,12 +46,12 @@ public class StaggeredRecyclerViewAdapter extends RecyclerView.Adapter<Staggered
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background);
+//        RequestOptions requestOptions = new RequestOptions()
+//                .placeholder(R.drawable.ic_launcher_background);
 
-        Glide.with(mContext)
+        GlideApp.with(mContext)
                 .load(mImageUrls.get(position))
-                .apply(requestOptions)
+                .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.image);
 
         holder.name.setText(mNames.get(position));

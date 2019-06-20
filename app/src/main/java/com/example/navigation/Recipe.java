@@ -3,13 +3,18 @@ package com.example.navigation;
 import java.util.*;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
+import java.util.List;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,35 +37,44 @@ import java.util.TimerTask;
 import android.os.Vibrator;
 import android.app.Service;
 import android.media.MediaPlayer;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 
 public class  Recipe extends AppCompatActivity {
 
-    private ImageView imageView;
-    private BottomNavigationView navigation;
-    private TextView recipeName;
-    private TextView ingredient_name1;
-    private TextView ingredient_quantity1;
-    private TextView ingredient_name2;
-    private TextView ingredient_quantity2;
-    private TextView ingredient_name3;
-    private TextView ingredient_quantity3;
-    private TextView ingredient_name4;
-    private TextView ingredient_quantity4;
-    private TextView ingredient_name5;
-    private TextView ingredient_quantity5;
-    private TextView step1;
-    private TextView step2;
-    private Button step3;
+    private static  final  String TAG = "Recipe Activity";
+    //for recipeXML
+    private ArrayList<String> mIndex = new ArrayList<>();
+    private ArrayList<String> mInner = new ArrayList<>();
 
-    private TextView time;
-    private Button countdown;
-    private Integer i = 10;
-    private Timer timer = null;
-    private TimerTask task = null;
-    private Vibrator vibrator;
-    private MediaPlayer player;
-    ProgressBar progressBar;
+    List<RecipetModel> arrayList;
+
+//    private ImageView imageView;
+    private BottomNavigationView navigation;
+//    private TextView recipeName;
+//    private TextView ingredient_name1;
+//    private TextView ingredient_quantity1;
+//    private TextView ingredient_name2;
+//    private TextView ingredient_quantity2;
+//    private TextView ingredient_name3;
+//    private TextView ingredient_quantity3;
+//    private TextView ingredient_name4;
+//    private TextView ingredient_quantity4;
+//    private TextView ingredient_name5;
+//    private TextView ingredient_quantity5;
+//    private TextView step1;
+//    private TextView step2;
+//    private Button step3;
+//
+//    private TextView time;
+//    private Button countdown;
+//    private Integer i = 10;
+//    private Timer timer = null;
+//    private TimerTask task = null;
+//    private Vibrator vibrator;
+//    private MediaPlayer player;
+//    ProgressBar progressBar;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -96,145 +110,187 @@ public class  Recipe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+        Log.d(TAG,"onCreate: started");
+        dataset();
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_recipe);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ReceiptAdapter adapter = new ReceiptAdapter(arrayList);
+
+        recyclerView.setAdapter(adapter);
+
+        //initStep();
         //mTextMessage = (TextView) findViewById(R.id.message);
 
-        step3 = findViewById(R.id.step3);
-        step3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTime();
-            }
-        });
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setScaleY(10);
-        vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
-        player = MediaPlayer.create(Recipe.this, R.raw.ok);
-
-        loadRecipe();
+//        step3 = findViewById(R.id.step3);
+//        step3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startTime();
+//            }
+//        });
+//        progressBar = findViewById(R.id.progressBar);
+//        progressBar.setScaleY(10);
+//        vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+//        player = MediaPlayer.create(Recipe.this, R.raw.ok);
+//
+//        loadRecipe();
     }
-    private void loadRecipe() {
+//    private void initStep(){
+//        Log.d(TAG,"initStep: preparing steps");
+//        for(int i=0;i<10;i++){
+//            mIndex.add("Step1");
+//            mInner.add("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+//        }
+//        initRecyclerView();
+//    }
 
-        recipeName = findViewById(R.id.recipename);
-        navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        imageView = findViewById(R.id.image1);
-
-        ingredient_name1 = findViewById(R.id.mt_name1);
-        ingredient_quantity1 = findViewById(R.id.mt_quan1);
-        ingredient_name2 = findViewById(R.id.mt_name2);
-        ingredient_quantity2 = findViewById(R.id.mt_quan2);
-        ingredient_name3 = findViewById(R.id.mt_name4);
-        ingredient_quantity3 = findViewById(R.id.mt_quan4);
-        ingredient_name4 = findViewById(R.id.mt_name5);
-        ingredient_quantity4 = findViewById(R.id.mt_quan5);
-        ingredient_name5 = findViewById(R.id.mt_name6);
-        ingredient_quantity5 = findViewById(R.id.mt_quan6);
-
-
-        step1 = findViewById(R.id.step1);
-        step2 = findViewById(R.id.step2);
-
-
-        getRecipeData();
-        System.out.println("getRecipeData");
-    }
-
-    private void getRecipeData() {
-        Request.Builder reqBuild = new Request.Builder().get();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
-                .newBuilder();
-        Integer id = 0;
-        final Intent intent = getIntent();
-        id = intent.getIntExtra("id", 0);
-        urlBuilder.addQueryParameter("id", id.toString());
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        reqBuild.url(urlBuilder.build());
-        Request request = reqBuild.build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                String err = e.getMessage();
-                System.out.println(err);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // final String data = response.body().string();
-                System.out.println("onResponse");
-                Message msg = handler.obtainMessage();
-                msg.obj = response.body().string();
-                handler.sendMessage(msg);
-            }
-        });
-    }
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            String m = (String) msg.obj;
-            Map<String,String> map = (Map)JSONObject.parse(m);
-            String name = map.get("name");
-            String picurl = map.get("image");
-            String ingredient_names[] = map.get("material").split("\n");
-            String ingredient_quantitys[] = map.get("amount").split("\n");
-            String steps[] = map.get("step").split("\n");
-            String time[] = map.get("time").split("\n");
-            try {
-                Picasso.get().load(picurl).into(imageView);
-                recipeName.setText(name);
-                ingredient_name1.setText(ingredient_names[0]);
-                ingredient_quantity1.setText(ingredient_quantitys[0]);
-                ingredient_name2.setText(ingredient_names[1]);
-                ingredient_quantity2.setText(ingredient_quantitys[1]);
-                ingredient_name3.setText(ingredient_names[2]);
-                ingredient_quantity3.setText(ingredient_quantitys[2]);
-                ingredient_name4.setText(ingredient_names[3]);
-                ingredient_quantity4.setText(ingredient_quantitys[3]);
-                ingredient_name5.setText(ingredient_names[4]);
-                ingredient_quantity5.setText(ingredient_quantitys[4]);
-                step1.setText(steps[0]);
-                step2.setText(steps[1]);
-                step3.setText(steps[2]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-    });
-
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            //time.setText(msg.arg1 + "");
-            progressBar.setProgress(msg.arg1*10);
-            startTime();
-        };
-    };
-
-    public void startTime() {
-        timer = new Timer();
-        task = new TimerTask() {
-
-            @Override
-            public void run() {
-                if (i > 0) {   //加入判断不能小于0
-                    i--;
-                    Message message = mHandler.obtainMessage();
-                    message.arg1 = i;
-                    mHandler.sendMessage(message);
-                } else if (i == 0) {
-                    vibrator.vibrate(2000);
-                    player.start();
-                    i--;
-                }
-            }
-        };
-        timer.schedule(task, 1000);
+//    private void initRecyclerView(){
+//        Log.d(TAG, "initRecyclerView:init recyclerview of recipe");
+//        RecyclerView recyclerView = findViewById(R.id.recyclerView_recipe);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//    }
+    private void dataset(){
+        arrayList = new ArrayList<>();
+        //recipe imageurl & recipe name holder here
+        arrayList.add(new RecipetModel(RecipetModel.IMGNAME_TYPE,"http://n.sinaimg.cn/sinacn10107/558/w1302h856/20190525/cdf1-hxntqyy4097584.jpg","チャハン","材料リスト"));
+        //meterial list holder here mind the boolean varible 't' at last
+        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
+        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
+        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
+        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
+        //step holder here
+        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
+        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
+        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
+        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
     }
 
-    public void stopTime(){
-        timer.cancel();
-    }
+
+//    private void loadRecipe() {
+//
+//        recipeName = findViewById(R.id.recipename);
+//        navigation = findViewById(R.id.navigation);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        imageView = findViewById(R.id.image1);
+//
+//        ingredient_name1 = findViewById(R.id.mt_name1);
+//        ingredient_quantity1 = findViewById(R.id.mt_quan1);
+//        ingredient_name2 = findViewById(R.id.mt_name2);
+//        ingredient_quantity2 = findViewById(R.id.mt_quan2);
+//        ingredient_name3 = findViewById(R.id.mt_name4);
+//        ingredient_quantity3 = findViewById(R.id.mt_quan4);
+//        ingredient_name4 = findViewById(R.id.mt_name5);
+//        ingredient_quantity4 = findViewById(R.id.mt_quan5);
+//        ingredient_name5 = findViewById(R.id.mt_name6);
+//        ingredient_quantity5 = findViewById(R.id.mt_quan6);
+//
+//
+//        step1 = findViewById(R.id.step1);
+//        step2 = findViewById(R.id.step2);
+//
+//
+//        getRecipeData();
+//        System.out.println("getRecipeData");
+//    }
+//
+//    private void getRecipeData() {
+//        Request.Builder reqBuild = new Request.Builder().get();
+//
+//        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
+//                .newBuilder();
+//        Integer id = 0;
+//        final Intent intent = getIntent();
+//        id = intent.getIntExtra("id", 0);
+//        urlBuilder.addQueryParameter("id", id.toString());
+//
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        reqBuild.url(urlBuilder.build());
+//        Request request = reqBuild.build();
+//        Call call = okHttpClient.newCall(request);
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                String err = e.getMessage();
+//                System.out.println(err);
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                // final String data = response.body().string();
+//                System.out.println("onResponse");
+//                Message msg = handler.obtainMessage();
+//                msg.obj = response.body().string();
+//                handler.sendMessage(msg);
+//            }
+//        });
+//    }
+//    Handler handler = new Handler(new Handler.Callback() {
+//        @Override
+//        public boolean handleMessage(Message msg) {
+//            String m = (String) msg.obj;
+//            Map<String,String> map = (Map)JSONObject.parse(m);
+//            String name = map.get("name");
+//            String picurl = map.get("image");
+//            String ingredient_names[] = map.get("material").split("\n");
+//            String ingredient_quantitys[] = map.get("amount").split("\n");
+//            String steps[] = map.get("step").split("\n");
+//            String time[] = map.get("time").split("\n");
+//            try {
+//                Picasso.get().load(picurl).into(imageView);
+//                recipeName.setText(name);
+//                ingredient_name1.setText(ingredient_names[0]);
+//                ingredient_quantity1.setText(ingredient_quantitys[0]);
+//                ingredient_name2.setText(ingredient_names[1]);
+//                ingredient_quantity2.setText(ingredient_quantitys[1]);
+//                ingredient_name3.setText(ingredient_names[2]);
+//                ingredient_quantity3.setText(ingredient_quantitys[2]);
+//                ingredient_name4.setText(ingredient_names[3]);
+//                ingredient_quantity4.setText(ingredient_quantitys[3]);
+//                ingredient_name5.setText(ingredient_names[4]);
+//                ingredient_quantity5.setText(ingredient_quantitys[4]);
+//                step1.setText(steps[0]);
+//                step2.setText(steps[1]);
+//                step3.setText(steps[2]);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return false;
+//        }
+//    });
+//
+//    private Handler mHandler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            //time.setText(msg.arg1 + "");
+//            progressBar.setProgress(msg.arg1*10);
+//            startTime();
+//        };
+//    };
+//
+//    public void startTime() {
+//        timer = new Timer();
+//        task = new TimerTask() {
+//
+//            @Override
+//            public void run() {
+//                if (i > 0) {   //加入判断不能小于0
+//                    i--;
+//                    Message message = mHandler.obtainMessage();
+//                    message.arg1 = i;
+//                    mHandler.sendMessage(message);
+//                } else if (i == 0) {
+//                    vibrator.vibrate(2000);
+//                    player.start();
+//                    i--;
+//                }
+//            }
+//        };
+//        timer.schedule(task, 1000);
+//    }
+//
+//    public void stopTime(){
+//        timer.cancel();
+//    }
 
 }
