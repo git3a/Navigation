@@ -27,12 +27,12 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     List<RecipetModel> list;
     private Context mContext;
 
-    public ReceiptAdapter(List<RecipetModel> list) {
+    public ReceiptAdapter(List<RecipetModel> list, Context context) {
          this.list = list;
 
 //        this.mStepIndex = mStepIndex;
 //        this.mStepInner = mStepInner;
-//        this.mContext = mContext;
+        this.mContext = context;
     }
 
     @Override
@@ -90,15 +90,17 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
 
             case RecipetModel.IMGNAME_TYPE:
-//                RequestOptions requestOptions = new RequestOptions()
-//                        .placeholder(R.drawable.ic_launcher_background);
+                RequestOptions requestOptions = new RequestOptions()
+                        .placeholder(R.drawable.ic_launcher_background);
 
 
                 //BUG TO Solve
-//                GlideApp.with(mContext)
-//                        .load(model.getmRecipeImgurl())
-//                        .placeholder(R.drawable.ic_add_black_24dp)
-//                        .into(((ImageNameViewHolder)holder).recipeimage);
+                if(this.mContext != null) {
+                    GlideApp.with(this.mContext)
+                            .load(model.getmRecipeImgurl())
+                            .placeholder(R.drawable.ic_add_black_24dp)
+                            .into(((ImageNameViewHolder) holder).recipeimage);
+                }
 
                 ((ImageNameViewHolder)holder).recipename.setText(model.getmRecipeName());
                 ((ImageNameViewHolder)holder).metatitle.setText(model.getmMetaTitle());

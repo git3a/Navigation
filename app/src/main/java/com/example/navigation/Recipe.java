@@ -52,21 +52,14 @@ public class  Recipe extends AppCompatActivity {
 
 //    private ImageView imageView;
     private BottomNavigationView navigation;
-//    private TextView recipeName;
-//    private TextView ingredient_name1;
-//    private TextView ingredient_quantity1;
-//    private TextView ingredient_name2;
-//    private TextView ingredient_quantity2;
-//    private TextView ingredient_name3;
-//    private TextView ingredient_quantity3;
-//    private TextView ingredient_name4;
-//    private TextView ingredient_quantity4;
-//    private TextView ingredient_name5;
-//    private TextView ingredient_quantity5;
-//    private TextView step1;
-//    private TextView step2;
-//    private Button step3;
-//
+    private String recipeName;
+    private String imageUrl;
+    private ArrayList<String> ingredient_names = new ArrayList<>();
+    private ArrayList<String> ingredient_quantities = new ArrayList<>();
+    private ArrayList<String> steps = new ArrayList<>();
+    private ArrayList<String> times = new ArrayList<>();
+
+    boolean locked = false;
 //    private TextView time;
 //    private Button countdown;
 //    private Integer i = 10;
@@ -115,10 +108,11 @@ public class  Recipe extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_recipe);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ReceiptAdapter adapter = new ReceiptAdapter(arrayList);
+        ReceiptAdapter adapter = new ReceiptAdapter(arrayList, this);
 
         recyclerView.setAdapter(adapter);
-
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //initStep();
         //mTextMessage = (TextView) findViewById(R.id.message);
 
@@ -152,19 +146,25 @@ public class  Recipe extends AppCompatActivity {
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //    }
     private void dataset(){
+        getRecipeData();
+        Iterator it_name = ingredient_names.iterator();
+        Iterator it_qu = ingredient_quantities.iterator();
+        Iterator it_step = steps.iterator();
         arrayList = new ArrayList<>();
         //recipe imageurl & recipe name holder here
-        arrayList.add(new RecipetModel(RecipetModel.IMGNAME_TYPE,"http://n.sinaimg.cn/sinacn10107/558/w1302h856/20190525/cdf1-hxntqyy4097584.jpg","チャハン","材料リスト"));
+        arrayList.add(new RecipetModel(RecipetModel.IMGNAME_TYPE,imageUrl,recipeName,"材料リスト"));
         //meterial list holder here mind the boolean varible 't' at last
-        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
-        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
-        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
-        arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE,"meet","5",true));
+        while(it_name.hasNext() && it_qu.hasNext()) {
+            arrayList.add(new RecipetModel(RecipetModel.METAR_TYPE, (String)it_name.next(), (String)it_qu.next(), true));
+        }
         //step holder here
-        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
-        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
-        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
-        arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,"step 1","boil it for 5 hours"));
+        int i = 1;
+        while(it_step.hasNext()) {
+
+            String stepnum = String.format("step %d", i);
+            i++;
+            arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,stepnum,(String)it_step.next()));
+        }
     }
 
 
@@ -195,70 +195,94 @@ public class  Recipe extends AppCompatActivity {
 //        System.out.println("getRecipeData");
 //    }
 //
-//    private void getRecipeData() {
-//        Request.Builder reqBuild = new Request.Builder().get();
-//
-//        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
-//                .newBuilder();
-//        Integer id = 0;
-//        final Intent intent = getIntent();
-//        id = intent.getIntExtra("id", 0);
-//        urlBuilder.addQueryParameter("id", id.toString());
-//
-//        OkHttpClient okHttpClient = new OkHttpClient();
-//        reqBuild.url(urlBuilder.build());
-//        Request request = reqBuild.build();
-//        Call call = okHttpClient.newCall(request);
-//        call.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                String err = e.getMessage();
-//                System.out.println(err);
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                // final String data = response.body().string();
-//                System.out.println("onResponse");
-//                Message msg = handler.obtainMessage();
-//                msg.obj = response.body().string();
-//                handler.sendMessage(msg);
-//            }
-//        });
-//    }
-//    Handler handler = new Handler(new Handler.Callback() {
-//        @Override
-//        public boolean handleMessage(Message msg) {
-//            String m = (String) msg.obj;
-//            Map<String,String> map = (Map)JSONObject.parse(m);
-//            String name = map.get("name");
-//            String picurl = map.get("image");
-//            String ingredient_names[] = map.get("material").split("\n");
-//            String ingredient_quantitys[] = map.get("amount").split("\n");
-//            String steps[] = map.get("step").split("\n");
-//            String time[] = map.get("time").split("\n");
-//            try {
-//                Picasso.get().load(picurl).into(imageView);
-//                recipeName.setText(name);
-//                ingredient_name1.setText(ingredient_names[0]);
-//                ingredient_quantity1.setText(ingredient_quantitys[0]);
-//                ingredient_name2.setText(ingredient_names[1]);
-//                ingredient_quantity2.setText(ingredient_quantitys[1]);
-//                ingredient_name3.setText(ingredient_names[2]);
-//                ingredient_quantity3.setText(ingredient_quantitys[2]);
-//                ingredient_name4.setText(ingredient_names[3]);
-//                ingredient_quantity4.setText(ingredient_quantitys[3]);
-//                ingredient_name5.setText(ingredient_names[4]);
-//                ingredient_quantity5.setText(ingredient_quantitys[4]);
-//                step1.setText(steps[0]);
-//                step2.setText(steps[1]);
-//                step3.setText(steps[2]);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return false;
-//        }
-//    });
+ private void getRecipeData() {
+        Request.Builder reqBuild = new Request.Builder().get();
+        locked = true;
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
+                .newBuilder();
+        Integer id;
+        final Intent intent = getIntent();
+        id = intent.getIntExtra("id", 0);
+        urlBuilder.addQueryParameter("id", id.toString());
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String err = e.getMessage();
+                System.out.println(err);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // final String data = response.body().string();
+                System.out.println("onResponse");
+
+                try {
+                    Map<String, String> map = (Map) JSONObject.parse(response.body().string());
+                    recipeName = map.get("name");
+                    imageUrl = map.get("image");
+                    String names[] = map.get("material").split("\n");
+                    String quantities[] = map.get("amount").split("\n");
+                    String step[] = map.get("step").split("\n");
+                    String time[] = map.get("time").split("\n");
+
+                    for (int i = 0; i < names.length; i++) {
+                        ingredient_names.add(names[i]);
+                    }
+                    for (int i = 0; i < quantities.length; i++) {
+                        ingredient_quantities.add(quantities[i]);
+                    }
+                    for (int i = 0; i < step.length; i++) {
+                        steps.add(step[i]);
+                    }
+                    for (int i = 0; i < time.length; i++) {
+                        times.add(time[i]);
+                    }
+                    locked = false;
+                }catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        });
+        while(locked) {System.out.println("locked");}
+    }
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            try {
+                String m = (String) msg.obj;
+                Map<String, String> map = (Map) JSONObject.parse(m);
+                recipeName = map.get("name");
+                imageUrl = map.get("image");
+                String names[] = map.get("material").split("\n");
+                String quantities[] = map.get("amount").split("\n");
+                String step[] = map.get("step").split("\n");
+                String time[] = map.get("time").split("\n");
+
+                for (int i = 0; i < names.length; i++) {
+                    ingredient_names.add(names[i]);
+                }
+                for (int i = 0; i < quantities.length; i++) {
+                    ingredient_quantities.add(quantities[i]);
+                }
+                for (int i = 0; i < step.length; i++) {
+                    steps.add(step[i]);
+                }
+                for (int i = 0; i < time.length; i++) {
+                    times.add(time[i]);
+                }
+                locked = false;
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+
+            return false;
+        }
+    });
 //
 //    private Handler mHandler = new Handler() {
 //        public void handleMessage(Message msg) {
