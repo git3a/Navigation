@@ -19,23 +19,25 @@
 
             <TextView
                 android:id="@+id/material"
-                android:layout_width="209dp"
+                android:layout_width="203dp"
                 android:layout_height="match_parent"
                 android:layout_column="0"
+                android:background="@color/colorToolbar"
                 android:gravity="center"
                 android:text="お肉"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/num" />
 
             <TextView
                 android:id="@+id/num"
-                android:layout_width="186dp"
-                android:layout_height="wrap_content"
+                android:layout_width="197dp"
+                android:layout_height="match_parent"
                 android:layout_column="1"
+                android:background="@color/colorToolbar"
                 android:gravity="center"
                 android:text="2kg"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toRightOf="@+id/material"
                 app:layout_constraintRight_toRightOf="parent" />
         </TableRow>

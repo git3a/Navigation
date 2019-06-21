@@ -25,13 +25,12 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerVi
 
     private ArrayList<String> Materials = new ArrayList<>();
     private ArrayList<String> mnums = new ArrayList<>();
-    //private ArrayList<Integer> mIds;
+
     private Context mContext;
 
-    public ListRecyclerViewAdapter(Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls, ArrayList<Integer> mIds) {
+    public ListRecyclerViewAdapter(Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls) {
         this.Materials = mNames;
         this.mnums = mImageUrls;
-        //this.mIds = mIds;
         this.mContext = mContext;
     }
 
@@ -64,12 +63,6 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerVi
         TextView material;
         TextView num;
 
-
-//        public ViewHolder(@NonNull View itemView, TextView material, TextView num) {
-//            super(itemView);
-//            this.material = material;
-//            this.num = num;
-//        }
         public ViewHolder(View itemView){
             super(itemView);
             this.material = itemView.findViewById(R.id.material);

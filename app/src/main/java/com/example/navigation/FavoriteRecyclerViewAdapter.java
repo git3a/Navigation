@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.ViewHolder>{
 
-    private static final String TAG = "StaggeredRecyclerViewAd";
+    private static final String TAG = "Favorite";
 
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();

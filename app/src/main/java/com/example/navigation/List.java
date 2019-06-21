@@ -41,15 +41,15 @@ public class List extends AppCompatActivity {
     int currentItems,totalItems,scrollOutItems;
     private static final String TAG = "List";
     private static final int NUM_COLUMNS = 1;
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<Integer> mIds = new ArrayList<>();
+    private ArrayList<String> materials = new ArrayList<>();
+    private ArrayList<String> amounts = new ArrayList<>();
+    //private ArrayList<Integer> mIds = new ArrayList<>();
 
     private java.util.List<String> name = new ArrayList<String>();
     private java.util.List<String> picurl = new ArrayList<String>();
 
 
-    private java.util.List<Integer> id = new ArrayList<>();
+    //private java.util.List<Integer> id = new ArrayList<>();
 
     private TextView mTextMessage;
     private BottomNavigationView navigation;
@@ -95,11 +95,11 @@ public class List extends AppCompatActivity {
         loadRecipe();
     }
     private void loadRecipe() {
-        Log.d(TAG,"initImageBitmaps: preparing bitmaps.");
         //Here to process your JSON, Leader.
 
         recipeName = findViewById(R.id.textView);
-        getPhotoName();
+
+        loaddata();
         initRecyclerView();
     }
 
@@ -110,7 +110,7 @@ public class List extends AppCompatActivity {
             @Override
             public void run() {
                 //Here to process your JSON, Leader.
-                getPhotoName();
+                loaddata();
 
                 staggeredRecyclerViewAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
@@ -123,7 +123,7 @@ public class List extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         progressBar = (ProgressBar) findViewById(R.id.progress);
         staggeredRecyclerViewAdapter =
-                new ListRecyclerViewAdapter(this,mNames,mImageUrls,mIds);
+                new ListRecyclerViewAdapter(this,materials,amounts);
 
         //perfectly solve the blink problem
         staggeredRecyclerViewAdapter.setHasStableIds(true);
@@ -164,81 +164,17 @@ public class List extends AppCompatActivity {
         });
     }
 
-    private void getPhotoName() {
-        Request.Builder reqBuild = new Request.Builder().get();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
-                .newBuilder();
-        Integer id = 0;
-        final Intent intent = getIntent();
-        id = intent.getIntExtra("id", 0);
-        urlBuilder.addQueryParameter("id", id.toString());
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        reqBuild.url(urlBuilder.build());
-        Request request = reqBuild.build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                String err = e.getMessage();
-                System.out.println(err);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // final String data = response.body().string();
-                System.out.println("onResponse");
-                String m = response.body().string();
-                Map<String, java.util.List> map = (Map) JSONObject.parse(m);
-                name = map.get("material");
-                picurl = map.get("amount");
-                //id = map.get("id");
-                lock = false;
-
-            }
-
-        });
-        while (lock) {System.out.println("locked");}
-        System.out.println("UnLock");
-        Iterator it_name = name.iterator();
-        Iterator it_url = picurl.iterator();
-        //Iterator it_id = id.iterator();
-        while(it_name.hasNext() && it_url.hasNext()) {
-            String name = (String)it_name.next();
-            String url = (String)it_url.next();
-            //Integer id = (Integer)it_id.next();
-
-            mImageUrls.add(url);
-            mNames.add(name);
-            //mIds.add(id);
-            lock = true;
-        }
+    private void loaddata() {
+        recipeName.setText("Recipe Name");
+        materials.add("mete");
+        materials.add("mete");
+        materials.add("mete");
+        materials.add("mete");
+        amounts.add("2kg");
+        amounts.add("2kg");
+        amounts.add("2kg");
+        amounts.add("2kg");
     }
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-
-            //String ingredient_names[] = map.get("material").split("\n");
-           // String ingredient_quantitys[] = map.get("amount").split("\n");
-
-            lock = false;
-            try {
-                String m = (String) msg.obj;
-                Map<String, java.util.List<String>> map = (Map)JSONObject.parse(m);
-                //String n = map.get("name");
-
-                name = map.get("material");
-                picurl = map.get("amount");
-
-                //recipeName.setText();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-    });
 
 }
 

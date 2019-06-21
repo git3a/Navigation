@@ -34,9 +34,9 @@ public class SearchResult extends AppCompatActivity {
     private BottomNavigationView navigation;
     Boolean isScrolling = false;
     ProgressBar progressBar;
-    StaggeredRecyclerViewAdapter staggeredRecyclerViewAdapter;
+    FavoriteRecyclerViewAdapter staggeredRecyclerViewAdapter;
     int currentItems,totalItems,scrollOutItems;
-    private static final String TAG = "Menu";
+    private static final String TAG = "Search";
     private static final int NUM_COLUMNS = 1;
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<String> mNames = new ArrayList<>();
@@ -111,7 +111,7 @@ public class SearchResult extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         progressBar = (ProgressBar) findViewById(R.id.progress);
         staggeredRecyclerViewAdapter =
-                new StaggeredRecyclerViewAdapter(this,mNames,mImageUrls,mIds);
+                new FavoriteRecyclerViewAdapter(this,mNames,mImageUrls,mIds);
 
         //perfectly solve the blink problem
         staggeredRecyclerViewAdapter.setHasStableIds(true);
