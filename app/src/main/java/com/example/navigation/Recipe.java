@@ -161,7 +161,7 @@ public class  Recipe extends AppCompatActivity {
         int i = 1;
         while(it_step.hasNext()) {
 
-            String stepnum = String.format("step %d", i);
+            String stepnum = String.format("ステップ %d", i);
             i++;
             arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,stepnum,(String)it_step.next()));
         }

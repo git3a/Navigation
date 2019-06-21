@@ -6,19 +6,21 @@
     android:id="@+id/stepparent_layout">
 
     <TextView
-        android:layout_marginLeft="20dp"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#313131"
         android:text="Step1"
         android:id="@+id/stepindex"
         />
     <TextView
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5fenzhong11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        android:text="5f1111111111111111111111111111111111111111111111111111111111111"
         android:id="@+id/stepinner"
+        android:textSize="18dp"
         android:layout_below="@+id/stepindex"
         />
 

@@ -91,16 +91,13 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             case RecipetModel.IMGNAME_TYPE:
                 RequestOptions requestOptions = new RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background);
+                        .placeholder(R.drawable.pic);
 
-
-                //BUG TO Solve
-                if(this.mContext != null) {
-                    GlideApp.with(this.mContext)
-                            .load(model.getmRecipeImgurl())
-                            .placeholder(R.drawable.ic_add_black_24dp)
-                            .into(((ImageNameViewHolder) holder).recipeimage);
-                }
+                //load recipe image
+                GlideApp.with(this.mContext)
+                        .load(model.getmRecipeImgurl())
+                        //.placeholder(R.drawable.pic)
+                        .into(((ImageNameViewHolder) holder).recipeimage);
 
                 ((ImageNameViewHolder)holder).recipename.setText(model.getmRecipeName());
                 ((ImageNameViewHolder)holder).metatitle.setText(model.getmMetaTitle());
