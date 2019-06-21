@@ -36,7 +36,7 @@ public class Favorite extends AppCompatActivity {
     private BottomNavigationView navigation;
     Boolean isScrolling = false;
     ProgressBar progressBar;
-    StaggeredRecyclerViewAdapter staggeredRecyclerViewAdapter;
+    FavoriteRecyclerViewAdapter staggeredRecyclerViewAdapter;
     int currentItems,totalItems,scrollOutItems;
     private static final String TAG = "Menu";
     private static final int NUM_COLUMNS = 1;
@@ -112,7 +112,7 @@ public class Favorite extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         progressBar = (ProgressBar) findViewById(R.id.progress);
         staggeredRecyclerViewAdapter =
-                new StaggeredRecyclerViewAdapter(this,mNames,mImageUrls,mIds);
+                new FavoriteRecyclerViewAdapter(this,mNames,mImageUrls,mIds);
 
         //perfectly solve the blink problem
         staggeredRecyclerViewAdapter.setHasStableIds(true);
