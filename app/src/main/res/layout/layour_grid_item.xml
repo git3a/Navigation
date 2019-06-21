@@ -24,14 +24,15 @@
                 android:src="@mipmap/ic_launcher"
                 android:id="@+id/imageview_widget"
                 android:scaleType="center"/>
+
             <TextView
+                android:id="@+id/name_widget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Food"
-                android:id="@+id/name_widget"
                 android:layout_below="@+id/imageview_widget"
                 android:layout_marginTop="10dp"
-                android:textColor="#000"/>
+                android:text="Food"
+                android:textColor="#000" />
 
         </RelativeLayout>
 
