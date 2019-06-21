@@ -58,6 +58,7 @@
             android:name=".My"
             android:launchMode = "singleInstance"></activity>
         <activity android:name=".Search"></activity>
+        <activity android:name=".BuildNewRecipe"></activity>
 
 
     </application>

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,6 +53,11 @@ public class Menu extends AppCompatActivity {
     private TextView recipeName;
     private ImageView imageView;
     private EditText mEditSearch;
+
+    //for build new receipe
+    private ImageButton mnew_receipe;
+
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -104,6 +110,16 @@ public class Menu extends AppCompatActivity {
             }
         });
         //loadHome();
+        // Click the plus and turn to page initialize the recipe
+        mnew_receipe = (ImageButton)findViewById(R.id.imageButton3);
+        mnew_receipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Menu.this,BuildNewRecipe.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
     }
     protected void onStart() {
         super.onStart();

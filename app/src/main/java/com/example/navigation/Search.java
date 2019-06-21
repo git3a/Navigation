@@ -32,7 +32,6 @@ public class Search extends AppCompatActivity{
     TextView mTvClear;
 
     SimpleCursorAdapter adapter;
-
     SearchSqliteHelper searchSqliteHelper;
     RecordsSqliteHelper recordsSqliteHelper;
     SQLiteDatabase db_search;
@@ -81,8 +80,6 @@ public class Search extends AppCompatActivity{
                 , CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         mListView.setAdapter(adapter);
 
-
-
     }
 
     private void deleteData(){
@@ -96,7 +93,7 @@ public class Search extends AppCompatActivity{
         db_search = searchSqliteHelper.getWritableDatabase();
         for (int i = 0; i < 20; i++) {
             db_search.execSQL("insert into table_search values(null,?,?)",
-                    new String[]{"name" + i + 10, "pass" + i + "word"});
+                    new String[]{"料理" + i + 10, "項目" + i + "名称"});
         }
         db_search.close();
     }
@@ -124,10 +121,20 @@ public class Search extends AppCompatActivity{
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(mEditSearch.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 //保存搜索记录
+
+                String searchWord = mTvSearch.getText().toString().trim();
+                insertRecords(searchWord);
+
                 insertRecords(mEditSearch.getText().toString().trim());
+                Intent intent = new Intent(Search.this, SearchResult.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("searchWord", searchWord);
+                startActivity(intent);
 
             }
         });
+
+
 
         /**
          * EditText对键盘搜索按钮的监听，保存搜索纪录，隐藏软件盘
