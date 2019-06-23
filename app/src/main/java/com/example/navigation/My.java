@@ -30,12 +30,9 @@ import java.io.IOException;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.*;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
@@ -120,20 +117,14 @@ public class My extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >=23)
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
     }
+    File temp;
     protected void showChoosePicDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(My.this);
         builder.setTitle("添加图片");
         String[] items = { "选择本地照片", "拍照" };
         builder.setNegativeButton("取消", null);
-        File temp = createPhotoFile(true);
+        temp = createPhotoFile(true);
         tempUri = Uri.fromFile(temp);
-        File cameraFolder = new File(
-                Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DCIM),"Camera");
-        String fileName = new SimpleDateFormat(
-                "ddHHmmss", Locale.US).format(new Date());
-        filePath = String.format("%s/%s.jpg", cameraFolder.getPath(),fileName);
-
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
             @Override
@@ -167,12 +158,13 @@ public class My extends AppCompatActivity {
         File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         File image = null;
 
+
         try {
             if (isCrop)
                 image = File.createTempFile(name + "crop", ".jpg", storageDir);
             else
                 image = File.createTempFile(name, ".jpg", storageDir);
-
+            filePath = image.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -191,9 +183,12 @@ public class My extends AppCompatActivity {
                     cutImage(data.getData()); // 对图片进行裁剪处理
                     break;
                 case CROP_SMALL_PICTURE:
-                    if (data != null) {
+                    if (tempUri != null) {
                         setImageToView(); // 让刚才选择裁剪得到的图片显示在界面上
+                        System.out.println("uploading image");
+                        uploadImage();
                     }
+
                     break;
             }
         }
@@ -219,9 +214,31 @@ public class My extends AppCompatActivity {
         startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
     protected void setImageToView() {
-
         imageView.setImageURI(tempUri);
+    }
+    protected void uploadImage() {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
+            RequestBody body = RequestBody.create(MediaType.parse("image/*"), temp);
+            requestBody.addFormDataPart("file", temp.getName(), body);
+            Request request = new Request.Builder().url("http://localhost:8000//back_end/uploadImage").post(requestBody.build()).build();
+            client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String string = response.body().string();
+                    System.out.println(string);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     protected void onStart() {
         super.onStart();
