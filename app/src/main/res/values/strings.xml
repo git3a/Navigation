@@ -4,4 +4,9 @@
     <string name="title_favorite">Favorite</string>
     <string name="title_list">List</string>
     <string name="title_my">My</string>
+    <string name="recipe_type">種類を選択してください</string>
+    <string name="recipe_type1">日本料理</string>
+    <string name="recipe_type2">西洋料理</string>
+    <string name="recipe_type3">中華料理</string>
+    <string name="recipe_type4">その他</string>
 </resources>
