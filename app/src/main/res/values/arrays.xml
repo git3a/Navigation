@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="recipetypelist">
+        <item>@string/recipe_type1</item>
+        <item>@string/recipe_type2</item>
+        <item>@string/recipe_type3</item>
+        <item>@string/recipe_type4</item>
+    </string-array>
+</resources>
