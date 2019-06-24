@@ -120,9 +120,9 @@ public class My extends AppCompatActivity {
     File temp;
     protected void showChoosePicDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(My.this);
-        builder.setTitle("添加图片");
-        String[] items = { "选择本地照片", "拍照" };
-        builder.setNegativeButton("取消", null);
+        builder.setTitle("select photo");
+        String[] items = { "写真選択", "撮影" };
+        builder.setNegativeButton("キャンセル", null);
         temp = createPhotoFile(true);
         tempUri = Uri.fromFile(temp);
         builder.setItems(items, new DialogInterface.OnClickListener() {
