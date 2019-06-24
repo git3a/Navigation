@@ -63,6 +63,7 @@ public class  Recipe extends AppCompatActivity {
     boolean locked = false;
     //    private TextView time;
     private Button testButton;
+    private Button favorite;
 //    private Integer i = 10;
 //    private Timer timer = null;
 //    private TimerTask task = null;
@@ -121,6 +122,14 @@ public class  Recipe extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG,"add list");
                 addList();
+            }
+        });
+        favorite = findViewById(R.id.favorite);
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"favorite");
+                addFavorite();
             }
         });
         //initStep();
@@ -262,7 +271,37 @@ public class  Recipe extends AppCompatActivity {
             }
         });
     }
+    private void addFavorite(){
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String userid = sharedPreferences.getString("userid", "");
 
+        Request.Builder reqBuild = new Request.Builder().get();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/insertFavorite")
+                .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertFavorite")
+        //       .newBuilder();
+        urlBuilder.addQueryParameter("userid", userid);
+        urlBuilder.addQueryParameter("recipeid", recipeid.toString());
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
+
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String err = e.getMessage();
+                System.out.println(err);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //final String data = response.body().string();
+                System.out.println("onResponse");
+            }
+        });
+    }
 //    private Handler mHandler = new Handler() {
 //        public void handleMessage(Message msg) {
 //            //time.setText(msg.arg1 + "");
