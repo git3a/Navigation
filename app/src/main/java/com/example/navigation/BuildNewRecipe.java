@@ -62,14 +62,12 @@ public class BuildNewRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_recipe);
         initView();
-
-
     }
 
     private void initView() {
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        gv_edit_msg = (GridView) findViewById(R.id.gv_edit_msg);
+        //gv_edit_msg = (GridView) findViewById(R.id.gv_edit_msg);
         mhome = (TextView)findViewById(R.id.home_buttonPanel);
         mhome.setFocusable(false);
         mhome.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +92,7 @@ public class BuildNewRecipe extends AppCompatActivity {
 
         final Spinner recipeTypeField = (Spinner)findViewById(R.id.recipe_type);
         String recipeType = recipeTypeField.getSelectedItem().toString();
+
     }
 
 }

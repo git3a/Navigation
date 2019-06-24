@@ -11,6 +11,9 @@
         android:layout_height="fill_parent">
 
 
+
+
+
          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -33,6 +36,26 @@
 
 
         </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/num_of_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:text="写真をアップロードしてくだい"/>
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="155dp"
+            android:layout_height="128dp"
+            android:background="@color/colorToolbar"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_cloud_upload_black_24dp"
+            tools:srcCompat="@drawable/ic_cloud_upload_black_24dp" />
 
 
         <EditText
@@ -65,29 +88,6 @@
             android:hint="ステップごとに入力くだいさい"
             android:inputType="textMultiLine"
             android:lines="10"/>
-
-        <GridView
-            android:id="@+id/gv_edit_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:numColumns="3"
-            android:columnWidth="60dp"
-            android:layout_marginTop="5dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center">
-
-        </GridView>
-
-        <TextView
-            android:id="@+id/num_of_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15dp"
-            android:text="写真をアップロードしてくだい"/>
 
 
 
