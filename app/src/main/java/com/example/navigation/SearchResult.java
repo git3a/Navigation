@@ -63,7 +63,7 @@ public class SearchResult extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(SearchResult.this, List.class);
+                    intent = new Intent(SearchResult.this, MyList.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;

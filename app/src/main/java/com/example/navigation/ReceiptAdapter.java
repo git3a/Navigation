@@ -74,7 +74,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((StepViewHolder)holder).steplayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG,"onclick: clicked on:" );
+                        Log.d(TAG,"onclick: step clicked on:" );
                     }
                 });
                 break;
@@ -84,7 +84,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((MetaViewHolder)holder).metarlayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG,"onclick: clicked on:" );
+                        Log.d(TAG,"onclick: metar clicked on:" );
                     }
                 });
                 break;
@@ -104,7 +104,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((ImageNameViewHolder)holder).imgnamelayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG,"onclick: clicked on:" );
+                        Log.d(TAG,"onclick: image clicked on:" );
                     }
                 });
                 break;

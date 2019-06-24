@@ -8,11 +8,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,7 +40,7 @@ public class BuildNewRecipe extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(BuildNewRecipe.this, List.class);
+                    intent = new Intent(BuildNewRecipe.this, MyList.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;

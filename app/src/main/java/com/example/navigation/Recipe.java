@@ -1,5 +1,6 @@
 package com.example.navigation;
 
+import android.content.SharedPreferences;
 import java.util.*;
 
 import android.content.Intent;
@@ -15,11 +16,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import java.util.List;
+
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.*;
+
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -43,6 +43,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 public class  Recipe extends AppCompatActivity {
 
+    private Integer recipeid;
     private static  final  String TAG = "Recipe Activity";
     //for recipeXML
     private ArrayList<String> mIndex = new ArrayList<>();
@@ -50,7 +51,7 @@ public class  Recipe extends AppCompatActivity {
 
     List<RecipetModel> arrayList;
 
-//    private ImageView imageView;
+    //    private ImageView imageView;
     private BottomNavigationView navigation;
     private String recipeName;
     private String imageUrl;
@@ -60,8 +61,8 @@ public class  Recipe extends AppCompatActivity {
     private ArrayList<String> times = new ArrayList<>();
 
     boolean locked = false;
-//    private TextView time;
-//    private Button countdown;
+    //    private TextView time;
+    private Button testButton;
 //    private Integer i = 10;
 //    private Timer timer = null;
 //    private TimerTask task = null;
@@ -85,7 +86,7 @@ public class  Recipe extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(Recipe.this, List.class);
+                    intent = new Intent(Recipe.this, MyList.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
@@ -113,6 +114,15 @@ public class  Recipe extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        testButton = findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"add list");
+                addList();
+            }
+        });
         //initStep();
         //mTextMessage = (TextView) findViewById(R.id.message);
 
@@ -139,7 +149,7 @@ public class  Recipe extends AppCompatActivity {
 //        initRecyclerView();
 //    }
 
-//    private void initRecyclerView(){
+    //    private void initRecyclerView(){
 //        Log.d(TAG, "initRecyclerView:init recyclerview of recipe");
 //        RecyclerView recyclerView = findViewById(R.id.recyclerView_recipe);
 //        recyclerView.setAdapter(adapter);
@@ -167,43 +177,14 @@ public class  Recipe extends AppCompatActivity {
         }
     }
 
-
-//    private void loadRecipe() {
-//
-//        recipeName = findViewById(R.id.recipename);
-//        navigation = findViewById(R.id.navigation);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        imageView = findViewById(R.id.image1);
-//
-//        ingredient_name1 = findViewById(R.id.mt_name1);
-//        ingredient_quantity1 = findViewById(R.id.mt_quan1);
-//        ingredient_name2 = findViewById(R.id.mt_name2);
-//        ingredient_quantity2 = findViewById(R.id.mt_quan2);
-//        ingredient_name3 = findViewById(R.id.mt_name4);
-//        ingredient_quantity3 = findViewById(R.id.mt_quan4);
-//        ingredient_name4 = findViewById(R.id.mt_name5);
-//        ingredient_quantity4 = findViewById(R.id.mt_quan5);
-//        ingredient_name5 = findViewById(R.id.mt_name6);
-//        ingredient_quantity5 = findViewById(R.id.mt_quan6);
-//
-//
-//        step1 = findViewById(R.id.step1);
-//        step2 = findViewById(R.id.step2);
-//
-//
-//        getRecipeData();
-//        System.out.println("getRecipeData");
-//    }
-//
- private void getRecipeData() {
+    private void getRecipeData() {
         Request.Builder reqBuild = new Request.Builder().get();
         locked = true;
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
                 .newBuilder();
-        Integer id;
         final Intent intent = getIntent();
-        id = intent.getIntExtra("id", 0);
-        urlBuilder.addQueryParameter("id", id.toString());
+        recipeid = intent.getIntExtra("id", 0);
+        urlBuilder.addQueryParameter("id", recipeid.toString());
 
         OkHttpClient okHttpClient = new OkHttpClient();
         reqBuild.url(urlBuilder.build());
@@ -250,40 +231,38 @@ public class  Recipe extends AppCompatActivity {
         });
         while(locked) {System.out.println("locked");}
     }
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            try {
-                String m = (String) msg.obj;
-                Map<String, String> map = (Map) JSONObject.parse(m);
-                recipeName = map.get("name");
-                imageUrl = map.get("image");
-                String names[] = map.get("material").split("\n");
-                String quantities[] = map.get("amount").split("\n");
-                String step[] = map.get("step").split("\n");
-                String time[] = map.get("time").split("\n");
+    private void addList(){
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String userid = sharedPreferences.getString("userid", "");
 
-                for (int i = 0; i < names.length; i++) {
-                    ingredient_names.add(names[i]);
-                }
-                for (int i = 0; i < quantities.length; i++) {
-                    ingredient_quantities.add(quantities[i]);
-                }
-                for (int i = 0; i < step.length; i++) {
-                    steps.add(step[i]);
-                }
-                for (int i = 0; i < time.length; i++) {
-                    times.add(time[i]);
-                }
-                locked = false;
-            }catch (Exception e) {
-                System.out.println(e);
+        Request.Builder reqBuild = new Request.Builder().get();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/insertList")
+        //.newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertList")
+                .newBuilder();
+        urlBuilder.addQueryParameter("userid", userid);
+        urlBuilder.addQueryParameter("recipeid", recipeid.toString());
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
+
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String err = e.getMessage();
+                System.out.println(err);
             }
 
-            return false;
-        }
-    });
-//
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //final String data = response.body().string();
+                System.out.println("onResponse");
+            }
+        });
+    }
+
 //    private Handler mHandler = new Handler() {
 //        public void handleMessage(Message msg) {
 //            //time.setText(msg.arg1 + "");

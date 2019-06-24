@@ -48,7 +48,7 @@
         <activity
             android:name=".Register"></activity>
         <activity
-            android:name=".List"></activity>
+            android:name=".MyList"></activity>
         <activity
             android:name=".Favorite"></activity>
         <activity

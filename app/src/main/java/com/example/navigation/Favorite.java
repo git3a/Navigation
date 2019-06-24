@@ -14,9 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -27,7 +25,6 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -63,7 +60,7 @@ public class Favorite extends AppCompatActivity {
 
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(Favorite.this, List.class);
+                    intent = new Intent(Favorite.this, MyList.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;

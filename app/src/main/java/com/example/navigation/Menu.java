@@ -74,7 +74,7 @@ public class Menu extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(Menu.this, com.example.navigation.List.class);
+                    intent = new Intent(Menu.this, MyList.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
