@@ -53,7 +53,7 @@ public class MyList extends AppCompatActivity {
     private TextView mTextMessage;
     private BottomNavigationView navigation;
     private TextView recipeName;
-
+    private String recipename;
     private java.util.List<String> mylists = new ArrayList<String>();
     private ArrayList<String> ingredient_names = new ArrayList<>();
     private ArrayList<String> ingredient_quantities = new ArrayList<>();
@@ -169,13 +169,14 @@ public class MyList extends AppCompatActivity {
     }
 
     private void loaddata() {
-        recipeName.setText("Recipe Name");
+
         materials.add("");
         amounts.add("");
         Iterator it_list = mylists.iterator();
         while(it_list.hasNext()) {
             String id = (String)it_list.next();
             getRecipeData(id);
+            recipeName.setText(recipename);
             Iterator it_name = ingredient_names.iterator();
             Iterator it_qu = ingredient_quantities.iterator();
 
@@ -212,7 +213,7 @@ public class MyList extends AppCompatActivity {
 
                 try {
                     Map<String, String> map = (Map) JSONObject.parse(response.body().string());
-
+                    recipename = map.get("name");
                     String names[] = map.get("material").split("\n");
                     String quantities[] = map.get("amount").split("\n");
 
