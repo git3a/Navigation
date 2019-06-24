@@ -188,10 +188,10 @@ public class MyList extends AppCompatActivity {
     private void getRecipeData(String id) {
         Request.Builder reqBuild = new Request.Builder().get();
         lock = true;
-        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
-        //       .newBuilder();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getrecipebyid")
-                .newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
+               .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getrecipebyid")
+        //        .newBuilder();
         urlBuilder.addQueryParameter("id", id);
 
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -237,8 +237,10 @@ public class MyList extends AppCompatActivity {
         String userid = sharedPreferences.getString("userid", "");
 
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getList")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getList")
                 .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getList")
+        //        .newBuilder();
         urlBuilder.addQueryParameter("id", userid);
 
         OkHttpClient okHttpClient = new OkHttpClient();

@@ -236,10 +236,10 @@ public class  Recipe extends AppCompatActivity {
         String userid = sharedPreferences.getString("userid", "");
 
         Request.Builder reqBuild = new Request.Builder().get();
-        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/insertList")
-        //.newBuilder();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertList")
-                .newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/insertList")
+        .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertList")
+        //       .newBuilder();
         urlBuilder.addQueryParameter("userid", userid);
         urlBuilder.addQueryParameter("recipeid", recipeid.toString());
 

@@ -120,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void getUserData(String uname) {
         Request.Builder reqBuild = new Request.Builder().get();
-        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getuser")
-        //        .newBuilder();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getuser/")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getuser")
                 .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getuser/")
+        //        .newBuilder();
         urlBuilder.addQueryParameter("user", uname);
 
         OkHttpClient okHttpClient = new OkHttpClient();
