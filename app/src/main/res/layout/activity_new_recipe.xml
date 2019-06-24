@@ -1,84 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/beige"
-    tools:context=".Menu">
-
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/beige"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-    <TextView
-        android:id="@+id/new_recipe_title"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@null"
-        android:drawableLeft="@android:drawable/ic_media_play"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="新たなレシピを作ろう！"
-        android:imeOptions="actionSearch"
-        android:singleLine="true"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/beige"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
-        android:layout_marginBottom="55dp"
+    tools:context=".MainActivity" >
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_search">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="68dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/navigation" />
+        android:layout_height="fill_parent">
 
 
-</android.support.constraint.ConstraintLayout>
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:text="レシピのアップロード"
+                android:textSize="15pt"/>
+
+            <TextView
+                android:id="@+id/home_buttonPanel"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_home_black_24dp"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/EditRecipename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="料理の名前を入力ください"
+            />
+
+        <EditText
+            android:id="@+id/Input_material"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="料理の材料を入力ください"/>
+
+        <Spinner
+            android:id="@+id/recipe_type"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:prompt="@string/recipe_type"
+            android:entries="@array/recipetypelist">
+        </Spinner>
+
+        <EditText
+            android:id="@+id/EditRecipeStep"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="ステップごとに入力くだいさい"
+            android:inputType="textMultiLine"
+            android:lines="10"/>
+
+        <GridView
+            android:id="@+id/gv_edit_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:numColumns="3"
+            android:columnWidth="60dp"
+            android:layout_marginTop="5dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center">
+
+        </GridView>
+
+        <TextView
+            android:id="@+id/num_of_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:text="写真をアップロードしてくだい"/>
+
+
+
+        <Button
+            android:id="@+id/ButtonSendRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="レシピを登録"
+            android:onClick="sendRecipeBack" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/beige"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/navigation" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="55dp"
+            android:layout_marginBottom="55dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_search">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="68dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@+id/navigation" />
+
+
+
+
+    </LinearLayout>
+</ScrollView>
