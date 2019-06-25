@@ -223,7 +223,7 @@ public class My extends AppCompatActivity {
 
             RequestBody body = RequestBody.create(MediaType.parse("image/*"), temp);
             requestBody.addFormDataPart("file", temp.getName(), body);
-            Request request = new Request.Builder().url("http://localhost:8000//back_end/uploadImage").post(requestBody.build()).build();
+            Request request = new Request.Builder().url("http://192.168.1.10:8000/uploadImage/").post(requestBody.build()).build();
             client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
