@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,8 @@ public class My extends AppCompatActivity {
     protected static final int TAKE_PICTURE = 1;
     protected static Uri tempUri;
     private static final int CROP_SMALL_PICTURE = 2;
+    private ImageButton f;
+    private ImageButton n;
 
     private String filePath;
     protected static Uri photoUri;
@@ -114,6 +117,26 @@ public class My extends AppCompatActivity {
         });
         if (Build.VERSION.SDK_INT >=23)
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
+
+        f = findViewById(R.id.favoriteb);
+        f.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(My.this,Favorite.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+
+        n = findViewById(R.id.notification);
+        n.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(My.this,Notification.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
     }
     File temp;
     protected void showChoosePicDialog() {

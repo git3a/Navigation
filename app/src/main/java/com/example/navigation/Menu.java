@@ -56,6 +56,7 @@ public class Menu extends AppCompatActivity {
 
     //for build new receipe
     private ImageButton mnew_receipe;
+    private ImageButton n;
 
 
 
@@ -116,6 +117,15 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Menu.this,BuildNewRecipe.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+        n = (ImageButton)findViewById(R.id.imageButton4);
+        n.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Menu.this,Notification.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }

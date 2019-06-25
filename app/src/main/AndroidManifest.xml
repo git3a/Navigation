@@ -59,6 +59,7 @@
             ></activity>
         <activity android:name=".Search"></activity>
         <activity android:name=".BuildNewRecipe"></activity>
+        <activity android:name=".Notification"></activity>
 
 
     </application>
