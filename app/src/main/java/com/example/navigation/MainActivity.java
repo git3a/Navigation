@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String _username = "";
     private String _password = "";
+    private String uid;
 
     private SharedPreferences sharedPreferences ;
     private boolean lock = true; // thread lock
@@ -121,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
         Request.Builder reqBuild = new Request.Builder().get();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getuser")
                 .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getuser/")
+        //        .newBuilder();
         urlBuilder.addQueryParameter("user", uname);
 
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -142,8 +145,10 @@ public class MainActivity extends AppCompatActivity {
 
                 String m = response.body().string();
                 Map<String,String> map = (Map) JSONObject.parse(m);
+                uid = map.get("userId");
                 _username = map.get("user");
                 _password = map.get("pwd");
+
                 lock = false;
             }
 
@@ -159,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("username", _username);
             editor.putString("password", _password);
+            editor.putString("userid", uid);
             editor.commit();
         }
     }

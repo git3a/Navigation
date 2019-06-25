@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,12 +13,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,12 +29,9 @@ import java.io.IOException;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.*;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
@@ -53,6 +49,8 @@ public class My extends AppCompatActivity {
     protected static final int TAKE_PICTURE = 1;
     protected static Uri tempUri;
     private static final int CROP_SMALL_PICTURE = 2;
+    private ImageButton f;
+    private ImageButton n;
 
     private String filePath;
     protected static Uri photoUri;
@@ -75,7 +73,7 @@ public class My extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(My.this, List.class);
+                    intent = new Intent(My.this, MyList.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
@@ -119,21 +117,35 @@ public class My extends AppCompatActivity {
         });
         if (Build.VERSION.SDK_INT >=23)
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
+
+        f = findViewById(R.id.favoriteb);
+        f.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(My.this,Favorite.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+
+        n = findViewById(R.id.notification);
+        n.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(My.this,Notification.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
     }
+    File temp;
     protected void showChoosePicDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(My.this);
-        builder.setTitle("添加图片");
-        String[] items = { "选择本地照片", "拍照" };
-        builder.setNegativeButton("取消", null);
-        File temp = createPhotoFile(true);
+        builder.setTitle("select photo");
+        String[] items = { "写真選択", "撮影" };
+        builder.setNegativeButton("キャンセル", null);
+        temp = createPhotoFile(true);
         tempUri = Uri.fromFile(temp);
-        File cameraFolder = new File(
-                Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DCIM),"Camera");
-        String fileName = new SimpleDateFormat(
-                "ddHHmmss", Locale.US).format(new Date());
-        filePath = String.format("%s/%s.jpg", cameraFolder.getPath(),fileName);
-
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
             @Override
@@ -167,12 +179,13 @@ public class My extends AppCompatActivity {
         File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         File image = null;
 
+
         try {
             if (isCrop)
                 image = File.createTempFile(name + "crop", ".jpg", storageDir);
             else
                 image = File.createTempFile(name, ".jpg", storageDir);
-
+            filePath = image.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -191,9 +204,12 @@ public class My extends AppCompatActivity {
                     cutImage(data.getData()); // 对图片进行裁剪处理
                     break;
                 case CROP_SMALL_PICTURE:
-                    if (data != null) {
+                    if (tempUri != null) {
                         setImageToView(); // 让刚才选择裁剪得到的图片显示在界面上
+                        System.out.println("uploading image");
+                        uploadImage();
                     }
+
                     break;
             }
         }
@@ -219,9 +235,32 @@ public class My extends AppCompatActivity {
         startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
     protected void setImageToView() {
-
         imageView.setImageURI(tempUri);
+    }
+    protected void uploadImage() {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
+            RequestBody body = RequestBody.create(MediaType.parse("image/*"), temp);
+            requestBody.addFormDataPart("file", temp.getName(), body);
+            Request request = new Request.Builder().url("http://localhost:8000//back_end/uploadImage").post(requestBody.build()).build();
+            client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String string = response.body().string();
+                    System.out.println(string);
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     protected void onStart() {
         super.onStart();

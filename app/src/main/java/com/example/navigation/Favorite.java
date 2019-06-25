@@ -1,6 +1,7 @@
 package com.example.navigation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,15 +15,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -48,6 +48,11 @@ public class Favorite extends AppCompatActivity {
     private java.util.List<String> picurl = new ArrayList<String>();
     private java.util.List<Integer> id = new ArrayList<>();
 
+    private java.util.List<String> mylists = new ArrayList<String>();
+    private String recipename;
+    private String imageUrl;
+    private Integer count = 0;
+    private Iterator it_list;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -63,7 +68,7 @@ public class Favorite extends AppCompatActivity {
 
                     return true;
                 case R.id.navigation_list:
-                    intent = new Intent(Favorite.this, List.class);
+                    intent = new Intent(Favorite.this, MyList.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     return true;
@@ -89,7 +94,17 @@ public class Favorite extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG,"initImageBitmaps: preparing bitmaps.");
         //Here to process your JSON, Leader.
-        getPhotoName();
+        getFavorite();
+        it_list = mylists.iterator();
+        while(it_list.hasNext() && count <= 6) {
+            String id = (String)it_list.next();
+            getRecipeData(id);
+            mImageUrls.add(imageUrl);
+            mNames.add(recipename);
+            mIds.add(Integer.parseInt(id));
+            count++;
+        }
+        count = 0;
         initRecyclerView();
     }
 
@@ -100,7 +115,15 @@ public class Favorite extends AppCompatActivity {
             @Override
             public void run() {
                 //Here to process your JSON, Leader.
-                getPhotoName();
+                while(it_list.hasNext() && count <= 6) {
+                    String id = (String)it_list.next();
+                    getRecipeData(id);
+                    mImageUrls.add(imageUrl);
+                    mNames.add(recipename);
+                    mIds.add(Integer.parseInt(id));
+                    count++;
+                }
+                count = 0;
 
                 staggeredRecyclerViewAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
@@ -152,14 +175,18 @@ public class Favorite extends AppCompatActivity {
             }
         });
     }
+    private void getRecipeData(String id) {
+        Request.Builder reqBuild = new Request.Builder().get();
+        lock = true;
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
+                .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getrecipebyid")
+        //        .newBuilder();
+        urlBuilder.addQueryParameter("id", id);
 
-    private void getPhotoName() {
-        String getUrl = "http://35.188.105.219/back_end/getrecipe";
         OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(getUrl)
-                .get()
-                .build();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
@@ -172,49 +199,56 @@ public class Favorite extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 // final String data = response.body().string();
                 System.out.println("onResponse");
-                //Message msg = handler.obtainMessage();
-                //msg.obj = response.body().string();
-                // handler.sendMessage(msg);
 
-                String m = response.body().string();
-                Map<String, java.util.List> map = (Map) JSONObject.parse(m);
-                name = map.get("name");
-                picurl = map.get("image");
-                id = map.get("id");
-                lock = false;
+                try {
+                    Map<String, String> map = (Map) JSONObject.parse(response.body().string());
+                    recipename = map.get("name");
+                    imageUrl = map.get("image");
+                    lock = false;
+                }catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         });
-        while (lock) {System.out.println("locked");}
-        System.out.println("UnLock");
-        Iterator it_name = name.iterator();
-        Iterator it_url = picurl.iterator();
-        Iterator it_id = id.iterator();
-        while(it_name.hasNext() && it_url.hasNext()) {
-            String name = (String)it_name.next();
-            String url = (String)it_url.next();
-            Integer id = (Integer)it_id.next();
+        while(lock) {System.out.println("locked");}
+    }
+    private void getFavorite() {
+        lock = true;
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String userid = sharedPreferences.getString("userid", "");
 
-            mImageUrls.add(url);
-            mNames.add(name);
-            mIds.add(id);
-            lock = true;
+        Request.Builder reqBuild = new Request.Builder().get();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getFavoriteRecipeId")
+                .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getFavoriteRecipeId")
+        //        .newBuilder();
+        urlBuilder.addQueryParameter("id", userid);
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
+
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String err = e.getMessage();
+                System.out.println(err);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // final String data = response.body().string();
+                System.out.println("onResponse");
+
+                String m = response.body().string();
+                Map<String, List> map = (Map) JSONObject.parse(m);
+                mylists = map.get("favorite");
+                lock = false;
+            }
+
+        });
+        while (lock) {
         }
     }
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            lock = false;
-            try {
-                String m = (String) msg.obj;
-                Map<String, java.util.List<String>> map = (Map)JSONObject.parse(m);
-                name = map.get("name");
-                picurl = map.get("image");
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-    });
 }

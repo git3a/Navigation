@@ -48,7 +48,7 @@
         <activity
             android:name=".Register"></activity>
         <activity
-            android:name=".List"></activity>
+            android:name=".MyList"></activity>
         <activity
             android:name=".Favorite"></activity>
         <activity
@@ -56,9 +56,10 @@
 
         <activity
             android:name=".My"
-            android:launchMode = "singleInstance"></activity>
+            ></activity>
         <activity android:name=".Search"></activity>
         <activity android:name=".BuildNewRecipe"></activity>
+        <activity android:name=".Notification"></activity>
 
 
     </application>

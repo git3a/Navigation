@@ -45,10 +45,12 @@
 
                 <TextView
                     android:id="@+id/name"
-                    android:layout_width="101dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="198dp"
+                    android:layout_height="59dp"
+                    android:gravity="center"
                     android:text="test"
                     android:textColor="@color/colorAccent"
+                    android:textDirection="locale"
                     android:textSize="36sp"
                     android:visibility="visible" />
 
@@ -77,8 +79,8 @@
                     android:src="@mipmap/ic_image_praise" />
 
                 <TextView
-                    android:layout_width="339dp"
-                    android:layout_height="47dp"
+                    android:layout_width="326dp"
+                    android:layout_height="45dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
@@ -87,11 +89,12 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="24sp" />
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/favoriteb"
                     android:layout_width="12dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/icon_right" />
+                    android:src="@drawable/icon_right" />
             </LinearLayout>
 
             <LinearLayout
@@ -118,11 +121,12 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="22sp" />
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/notification"
                     android:layout_width="12dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/icon_right" />
+                    android:src="@drawable/icon_right" />
 
             </LinearLayout>
 
