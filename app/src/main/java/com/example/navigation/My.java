@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,9 +25,10 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
-
+import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.*;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
+import com.squareup.picasso.Picasso;
 
 public class My extends AppCompatActivity {
     private BottomNavigationView navigation;
@@ -44,6 +47,8 @@ public class My extends AppCompatActivity {
 
     private String name;
     private String email;
+    private String myurl;
+
     private boolean lock = true; // thread lock
     protected static final int CHOOSE_PICTURE = 0;
     protected static final int TAKE_PICTURE = 1;
@@ -115,6 +120,14 @@ public class My extends AppCompatActivity {
                 showChoosePicDialog();
             }
         });
+        try {
+            URL url = new URL(myurl);
+
+            Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
+            imageView.setImageBitmap(bitmap);
+        } catch (Exception e) {
+
+        }
         if (Build.VERSION.SDK_INT >=23)
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
 
@@ -208,6 +221,7 @@ public class My extends AppCompatActivity {
                         setImageToView(); // 让刚才选择裁剪得到的图片显示在界面上
                         System.out.println("uploading image");
                         uploadImage();
+                        changeUrl();
                     }
 
                     break;
@@ -238,13 +252,14 @@ public class My extends AppCompatActivity {
         imageView.setImageURI(tempUri);
     }
     protected void uploadImage() {
+        lock = true;
         try {
             OkHttpClient client = new OkHttpClient();
             MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
             RequestBody body = RequestBody.create(MediaType.parse("image/*"), temp);
             requestBody.addFormDataPart("file", temp.getName(), body);
-            Request request = new Request.Builder().url("http://localhost:8000//back_end/uploadImage").post(requestBody.build()).build();
+            Request request = new Request.Builder().url("http://35.222.222.232/uploadImage/").post(requestBody.build()).build();
             client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -254,14 +269,49 @@ public class My extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String string = response.body().string();
-                    System.out.println(string);
-
+                    Map<String, String> map = (Map) JSONObject.parse(string);
+                    myurl = map.get("url");
+                    lock = false;
                 }
             });
+            while (lock) {}
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    protected void changeUrl() {
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String userid = sharedPreferences.getString("userid", "");
+
+        Request.Builder reqBuild = new Request.Builder().get();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertTouxing")
+                .newBuilder();
+        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertList")
+        //       .newBuilder();
+        urlBuilder.addQueryParameter("userid", userid);
+        urlBuilder.addQueryParameter("url", myurl);
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
+
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String err = e.getMessage();
+                System.out.println(err);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String data = response.body().string();
+                System.out.println("onResponse");
+            }
+        });
+
+    }
+
     protected void onStart() {
         super.onStart();
         navigation.setSelectedItemId(R.id.navigation_my);
@@ -271,7 +321,7 @@ public class My extends AppCompatActivity {
         String susername = sharedPreferences.getString("username", "");
         System.out.println(susername);
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getuser")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getuser")
                 .newBuilder();
         urlBuilder.addQueryParameter("user", susername);
 
@@ -296,6 +346,7 @@ public class My extends AppCompatActivity {
                 Map<String,String> map = (Map) JSONObject.parse(m);
                 name = map.get("user");
                 email = map.get("email");
+                myurl = map.get("url");
                 lock = false;
             }
 

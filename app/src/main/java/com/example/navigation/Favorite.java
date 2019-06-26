@@ -178,7 +178,7 @@ public class Favorite extends AppCompatActivity {
     private void getRecipeData(String id) {
         Request.Builder reqBuild = new Request.Builder().get();
         lock = true;
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getrecipebyid")
                 .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getrecipebyid")
         //        .newBuilder();
@@ -218,7 +218,7 @@ public class Favorite extends AppCompatActivity {
         String userid = sharedPreferences.getString("userid", "");
 
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getFavoriteRecipeId")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getFavoriteRecipeId")
                 .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getFavoriteRecipeId")
         //        .newBuilder();

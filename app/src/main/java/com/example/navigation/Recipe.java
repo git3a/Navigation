@@ -189,7 +189,7 @@ public class  Recipe extends AppCompatActivity {
     private void getRecipeData() {
         Request.Builder reqBuild = new Request.Builder().get();
         locked = true;
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getrecipebyid")
                 .newBuilder();
         final Intent intent = getIntent();
         recipeid = intent.getIntExtra("id", 0);
@@ -245,7 +245,7 @@ public class  Recipe extends AppCompatActivity {
         String userid = sharedPreferences.getString("userid", "");
 
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/insertList")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertList")
         .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertList")
         //       .newBuilder();
@@ -276,7 +276,7 @@ public class  Recipe extends AppCompatActivity {
         String userid = sharedPreferences.getString("userid", "");
 
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/insertFavorite")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertFavorite")
                 .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertFavorite")
         //       .newBuilder();

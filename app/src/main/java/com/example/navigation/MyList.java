@@ -101,7 +101,7 @@ public class MyList extends AppCompatActivity {
     private void loadRecipe() {
         //Here to process your JSON, Leader.
 
-        recipeName = findViewById(R.id.textView);
+        //recipeName = findViewById(R.id.textView);
 
         loaddata();
         initRecyclerView();
@@ -176,7 +176,7 @@ public class MyList extends AppCompatActivity {
         while(it_list.hasNext()) {
             String id = (String)it_list.next();
             getRecipeData(id);
-            recipeName.setText(recipename);
+            //recipeName.setText(recipename);
             Iterator it_name = ingredient_names.iterator();
             Iterator it_qu = ingredient_quantities.iterator();
 
@@ -189,7 +189,7 @@ public class MyList extends AppCompatActivity {
     private void getRecipeData(String id) {
         Request.Builder reqBuild = new Request.Builder().get();
         lock = true;
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getrecipebyid")
                .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getrecipebyid")
         //        .newBuilder();
@@ -238,7 +238,7 @@ public class MyList extends AppCompatActivity {
         String userid = sharedPreferences.getString("userid", "");
 
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getList")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getList")
                 .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getList")
         //        .newBuilder();

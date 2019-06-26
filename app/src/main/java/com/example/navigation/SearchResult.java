@@ -159,7 +159,7 @@ public class SearchResult extends AppCompatActivity {
 
         Request.Builder reqBuild = new Request.Builder().get();
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyname")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getrecipebyname")
                 .newBuilder();
         urlBuilder.addQueryParameter("searchWord", searchWord);
 
