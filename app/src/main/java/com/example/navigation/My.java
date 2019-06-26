@@ -2,6 +2,7 @@ package com.example.navigation;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -145,7 +146,7 @@ public class My extends AppCompatActivity {
         n.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(My.this,Notification.class);
+                Intent intent = new Intent(My.this, Notification.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }

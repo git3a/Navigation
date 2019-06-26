@@ -8,7 +8,10 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="vertical"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
+
+
+
 
 
          <LinearLayout
@@ -34,6 +37,24 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/num_of_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:text="ここで、料理の写真をアップロードしてくだい"/>
+
+        <ImageView
+            android:id="@+id/cuisine_image"
+            android:layout_width="155dp"
+            android:layout_height="128dp"
+            android:background="@color/colorToolbar"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_cloud_upload_black_24dp"
+            tools:srcCompat="@drawable/ic_cloud_upload_black_24dp" />
+
 
         <EditText
             android:id="@+id/EditRecipename"
@@ -43,59 +64,93 @@
             android:hint="料理の名前を入力ください"
             />
 
-        <EditText
-            android:id="@+id/Input_material"
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="料理の材料を入力ください"/>
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/btn_add_material"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="材料の入力" />
+
+            <Button
+                android:id="@+id/btn_delete_material"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="材料の削除" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/My_material_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+
 
         <Spinner
             android:id="@+id/recipe_type"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:autofillHints="種類を選択してください"
             android:prompt="@string/recipe_type"
             android:entries="@array/recipetypelist">
         </Spinner>
 
-        <EditText
-            android:id="@+id/EditRecipeStep"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="ステップごとに入力くだいさい"
-            android:inputType="textMultiLine"
-            android:lines="10"/>
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_add_step"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="ステップの入力"/>
 
-        <GridView
-            android:id="@+id/gv_edit_msg"
+            <Button
+                android:id="@+id/btn_delete_step"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="ステップの削除"/>
+
+        </LinearLayout>
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:numColumns="3"
-            android:columnWidth="60dp"
-            android:layout_marginTop="5dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center">
+            android:layout_height="wrap_content">
 
-        </GridView>
+            <LinearLayout
+                android:id="@+id/My_step_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/num_of_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15dp"
-            android:text="写真をアップロードしてくだい"/>
+            </LinearLayout>
+
+        </ScrollView>
+
 
 
 
         <Button
             android:id="@+id/ButtonSendRecipe"
-            android:layout_width="match_parent"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="レシピを登録"
+            android:text="保存"
+            android:layout_gravity="center"
             android:onClick="sendRecipeBack" />
 
         <android.support.design.widget.BottomNavigationView
