@@ -101,7 +101,7 @@ public class MyList extends AppCompatActivity {
     private void loadRecipe() {
         //Here to process your JSON, Leader.
 
-        recipeName = findViewById(R.id.textView);
+        //recipeName = findViewById(R.id.textView);
 
         loaddata();
         initRecyclerView();
