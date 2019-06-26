@@ -122,11 +122,9 @@ public class My extends AppCompatActivity {
             }
         });
         try {
-            URL url = new URL(myurl);
-
-            Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
-            imageView.setImageBitmap(bitmap);
+            Picasso.get().load(myurl).into(imageView);
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
         if (Build.VERSION.SDK_INT >=23)
