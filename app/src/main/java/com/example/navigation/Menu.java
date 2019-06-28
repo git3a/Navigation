@@ -112,6 +112,17 @@ public class Menu extends AppCompatActivity {
             }
         });
         //loadHome();
+
+
+        n = (ImageButton)findViewById(R.id.imageButton4);
+        n.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Menu.this, Notification.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
         // Click the plus and turn to page initialize the recipe
         mnew_receipe = (ImageButton)findViewById(R.id.imageButton3);
         mnew_receipe.setOnClickListener(new View.OnClickListener() {
@@ -122,15 +133,7 @@ public class Menu extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        n = (ImageButton)findViewById(R.id.imageButton4);
-        n.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Menu.this, Notification.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-            }
-        });
+
     }
     protected void onStart() {
         super.onStart();

@@ -34,18 +34,12 @@ import okhttp3.Response;
 
 public class MyList extends AppCompatActivity {
 
-    Boolean isScrolling = false;
-    ProgressBar progressBar;
-    ListRecyclerViewAdapter staggeredRecyclerViewAdapter;
-    int currentItems,totalItems,scrollOutItems;
-    private static final String TAG = "MyList";
-    private static final int NUM_COLUMNS = 1;
-    private ArrayList<String> materials = new ArrayList<>();
-    private ArrayList<String> amounts = new ArrayList<>();
-    //private ArrayList<Integer> mIds = new ArrayList<>();
 
-    private java.util.List<String> name = new ArrayList<String>();
-    private java.util.List<String> picurl = new ArrayList<String>();
+    private static final String TAG = "MyList";
+
+    List<ListModel> cList;
+
+    private String recipename;
 
 
     //private java.util.MyList<Integer> id = new ArrayList<>();
@@ -53,7 +47,7 @@ public class MyList extends AppCompatActivity {
     private TextView mTextMessage;
     private BottomNavigationView navigation;
     private TextView recipeName;
-    private String recipename;
+    private boolean lock = true;
     private java.util.List<String> mylists = new ArrayList<String>();
     private ArrayList<String> ingredient_names = new ArrayList<>();
     private ArrayList<String> ingredient_quantities = new ArrayList<>();
@@ -87,109 +81,63 @@ public class MyList extends AppCompatActivity {
         }
     };
 
-    private boolean lock = true;
+    //private boolean lock = true;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_list);
         getList();
-        loadRecipe();
-    }
-    private void loadRecipe() {
-        //Here to process your JSON, Leader.
-
-        //recipeName = findViewById(R.id.textView);
-
         loaddata();
-        initRecyclerView();
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ListRecyclerViewAdapter adapter = new ListRecyclerViewAdapter(this, cList);
+        recyclerView.setAdapter(adapter);
     }
 
-    private void loadmoreBitmaps(){
-        Log.d(TAG,"loadmoreBitmaps: preparing bitmaps.");
-        progressBar.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Here to process your JSON, Leader.
-                loaddata();
-
-                staggeredRecyclerViewAdapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-            }
-        },2000);
-    }
-
-    private void initRecyclerView(){
-        Log.d(TAG,"initRecyclerView: initializing staggered recyclerview");
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        progressBar = (ProgressBar) findViewById(R.id.progress);
-        staggeredRecyclerViewAdapter =
-                new ListRecyclerViewAdapter(this,materials,amounts);
-
-        //perfectly solve the blink problem
-        staggeredRecyclerViewAdapter.setHasStableIds(true);
-        final StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(NUM_COLUMNS, LinearLayoutManager.VERTICAL);
-        //forbid swap side of two columns
-        //staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        recyclerView.getItemAnimator().setChangeDuration(0);
-
-        recyclerView.setAdapter(staggeredRecyclerViewAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                {
-                    isScrolling = true;
-                }
-            }
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentItems = staggeredGridLayoutManager.getChildCount();
-                totalItems = staggeredGridLayoutManager.getItemCount();
-                int[] firstVisibleItem=null;
-                firstVisibleItem = staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions(firstVisibleItem);
-                if(firstVisibleItem != null && firstVisibleItem.length > 0) {
-                    scrollOutItems = firstVisibleItem[0];
-                }
-                if(isScrolling && (currentItems + scrollOutItems > totalItems)){
-                    //data fetch here, leader
-                    isScrolling=false;
-                    loadmoreBitmaps();
-                }
-            }
-        });
-    }
 
     private void loaddata() {
 
-        materials.add("");
-        amounts.add("");
+        //materials.add("");
+        //amounts.add("");
         Iterator it_list = mylists.iterator();
+        cList = new ArrayList<>();
+//        String recipe = "food1";
+//        String recipe2 = "food2";
+//        String metrails = "mete";
+//        String num = "2kg";
+//        String m = "oil";
+//        cList.add(new ListModel(ListModel.RECIPE_TYPE, recipe));
+//        cList.add(new ListModel(ListModel.METAR_TYPE, metrails,num,true));
+//        cList.add(new ListModel(ListModel.METAR_TYPE, m, num,true));
+//        cList.add(new ListModel(ListModel.METAR_TYPE, metrails,num,true));
+//        cList.add(new ListModel(ListModel.RECIPE_TYPE, recipe2));
+//        cList.add(new ListModel(ListModel.METAR_TYPE, metrails,num,true));
+
         while(it_list.hasNext()) {
             String id = (String)it_list.next();
             getRecipeData(id);
-            //recipeName.setText(recipename);
+
             Iterator it_name = ingredient_names.iterator();
             Iterator it_qu = ingredient_quantities.iterator();
+            cList.add(new ListModel(ListModel.RECIPE_TYPE, recipename));
 
             while(it_name.hasNext() && it_qu.hasNext()) {
-                materials.add((String)it_name.next());
-                amounts.add((String)it_qu.next());
+                cList.add(new ListModel(ListModel.METAR_TYPE, (String)it_name.next(), (String)it_qu.next(), true));
+                //materials.add((String)it_name.next());
+                //amounts.add((String)it_qu.next());
             }
         }
     }
     private void getRecipeData(String id) {
         Request.Builder reqBuild = new Request.Builder().get();
         lock = true;
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getrecipebyid")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getrecipebyid")
                .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getrecipebyid")
         //        .newBuilder();
@@ -238,7 +186,7 @@ public class MyList extends AppCompatActivity {
         String userid = sharedPreferences.getString("userid", "");
 
         Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getList")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.188.105.219/back_end/getList")
                 .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getList")
         //        .newBuilder();

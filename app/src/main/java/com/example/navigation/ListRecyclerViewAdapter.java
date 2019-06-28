@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,55 +19,110 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder>{
+public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private static final String TAG = "StaggeredRecyclerViewAd";
+    private static final String TAG = "ListRecyclerViewAd";
 
     private ArrayList<String> Materials = new ArrayList<>();
     private ArrayList<String> mnums = new ArrayList<>();
+    List<ListModel> list;
 
     private Context mContext;
 
-    public ListRecyclerViewAdapter(Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls) {
-        this.Materials = mNames;
-        this.mnums = mImageUrls;
+    public ListRecyclerViewAdapter(Context mContext,List<ListModel> list) {
+        this.list = list;
         this.mContext = mContext;
     }
 
     @Override
-    public ListRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layour_grid_list, parent,false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        switch (viewType){
+            case ListModel.METAR_TYPE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layour_grid_list,parent,false);
+                return new MetaViewHolder(view);
+
+            case ListModel.RECIPE_TYPE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_grid_recipename,parent,false);
+                return new RecipeViewHolder(view);
+
+        }
+        return null;
+    }
+
+    public int getItemViewType(int position) {
+        ListModel model = list.get(position);
+        if (model != null){
+            return model.getType();
+        }
+        return 0;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        Log.d(TAG,"onBindViewHolder: called");
+        ListModel model = list.get(i);
+        switch(model.getType()){
+            case ListModel.METAR_TYPE:
+                ((MetaViewHolder)viewHolder).metarname.setText(model.getmMetaName());
+                ((MetaViewHolder)viewHolder).metarquantity.setText(model.getmMetaQuantity());
+                ((MetaViewHolder)viewHolder).metarlayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG,"onclick: metar clicked on:" );
+                    }
+                });
+                break;
+
+            case ListModel.RECIPE_TYPE:
+
+                ((RecipeViewHolder)viewHolder).recipename.setText(model.getmRecipeName());
+                ((RecipeViewHolder)viewHolder).recipelayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG,"onclick: recipename clicked on:" );
+                    }
+                });
+
+                break;
+
+        };
     }
 
     public long getItemId(int position) {
         return position;
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder Holder, int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
-
-        Holder.material.setText(Materials.get(position));
-        Holder.num.setText(mnums.get(position));
-
-    }
 
     @Override
     public int getItemCount() {
-        return Materials.size();
+        return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView material;
-        TextView num;
+    class MetaViewHolder extends RecyclerView.ViewHolder{
+        //ImageView image;
+        TextView metarname;
+        TextView metarquantity;
+        RelativeLayout metarlayout;
 
-        public ViewHolder(View itemView){
+        public MetaViewHolder(@NonNull View itemView){
             super(itemView);
-            this.material = itemView.findViewById(R.id.material);
-            this.num = itemView.findViewById(R.id.num);
+            metarname = itemView.findViewById(R.id.material);
+            metarquantity = itemView.findViewById(R.id.num);
+            metarlayout = itemView.findViewById(R.id.Cailiaolayout);
+        }
+    }
+
+    public class RecipeViewHolder extends RecyclerView.ViewHolder{
+        TextView recipename;
+        RelativeLayout recipelayout;
+
+        public RecipeViewHolder(View itemView){
+            super(itemView);
+            recipename = itemView.findViewById(R.id.recipename);
+            recipelayout = itemView.findViewById(R.id.Recipenamelayout);
         }
     }
 }

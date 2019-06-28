@@ -130,6 +130,16 @@ public class My extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >=23)
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
 
+        n = findViewById(R.id.notification);
+        n.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(My.this, Notification.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+
         f = findViewById(R.id.favoriteb);
         f.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,15 +150,7 @@ public class My extends AppCompatActivity {
             }
         });
 
-        n = findViewById(R.id.notification);
-        n.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(My.this, Notification.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-            }
-        });
+
     }
     File temp;
     protected void showChoosePicDialog() {
