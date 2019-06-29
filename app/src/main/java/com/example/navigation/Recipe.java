@@ -220,68 +220,7 @@ public class  Recipe extends AppCompatActivity {
         });
         while(locked) {System.out.println("locked");}
     }
-    private void addList(){
-        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-        String userid = sharedPreferences.getString("userid", "");
 
-        Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertList")
-        .newBuilder();
-        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertList")
-        //       .newBuilder();
-        urlBuilder.addQueryParameter("userid", userid);
-        urlBuilder.addQueryParameter("recipeid", recipeid.toString());
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        reqBuild.url(urlBuilder.build());
-        Request request = reqBuild.build();
-
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                String err = e.getMessage();
-                System.out.println(err);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //final String data = response.body().string();
-                System.out.println("onResponse");
-            }
-        });
-    }
-    private void addFavorite(){
-        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-        String userid = sharedPreferences.getString("userid", "");
-
-        Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertFavorite")
-                .newBuilder();
-        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insertFavorite")
-        //       .newBuilder();
-        urlBuilder.addQueryParameter("userid", userid);
-        urlBuilder.addQueryParameter("recipeid", recipeid.toString());
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        reqBuild.url(urlBuilder.build());
-        Request request = reqBuild.build();
-
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                String err = e.getMessage();
-                System.out.println(err);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //final String data = response.body().string();
-                System.out.println("onResponse");
-            }
-        });
-    }
 //    private Handler mHandler = new Handler() {
 //        public void handleMessage(Message msg) {
 //            //time.setText(msg.arg1 + "");
