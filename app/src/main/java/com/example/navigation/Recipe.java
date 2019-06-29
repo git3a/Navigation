@@ -20,8 +20,6 @@ import java.util.List;
 import android.view.View;
 import android.widget.*;
 
-import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -62,8 +60,6 @@ public class  Recipe extends AppCompatActivity {
 
     boolean locked = false;
     //    private TextView time;
-    private Button testButton;
-    private Button favorite;
 //    private Integer i = 10;
 //    private Timer timer = null;
 //    private TimerTask task = null;
@@ -110,28 +106,12 @@ public class  Recipe extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_recipe);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ReceiptAdapter adapter = new ReceiptAdapter(arrayList, this);
+        ReceiptAdapter adapter = new ReceiptAdapter(arrayList, this, recipeid.toString());
 
         recyclerView.setAdapter(adapter);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        testButton = findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG,"add list");
-                addList();
-            }
-        });
-        favorite = findViewById(R.id.favorite);
-        favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG,"favorite");
-                addFavorite();
-            }
-        });
         //initStep();
         //mTextMessage = (TextView) findViewById(R.id.message);
 
