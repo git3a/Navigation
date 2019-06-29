@@ -11,21 +11,37 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/pic" />
 
-    <TextView
-        android:id="@+id/recipename"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="#383636"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:layout_below="@+id/recipeimage"/>
+        android:orientation="vertical"
+        android:layout_below="@+id/recipeimage"
+        android:id="@+id/name_linear">
+
+        <TextView
+            android:id="@+id/recipename"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="#383636"
+            android:textSize="30dp" />
+
+        <ImageButton
+            android:id="@+id/favoritebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/beige"
+            app:srcCompat="@drawable/ic_favorite_black_24dp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recipename"
-        android:layout_marginVertical="20dp"
+        android:layout_below="@id/name_linear"
+        android:layout_marginVertical="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -35,6 +51,7 @@
             android:layout_gravity="center_horizontal"
             android:textSize="20dp"
             android:gravity="center"
+            android:textColor="#383636"
             android:layout_weight="2"
             android:text="材料リスト" />
 

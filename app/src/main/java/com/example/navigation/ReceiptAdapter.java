@@ -107,6 +107,20 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         Log.d(TAG,"onclick: image clicked on:" );
                     }
                 });
+                //buylist onclick responsor
+                ((ImageNameViewHolder)holder).buylistbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       // addList();
+                    }
+                });
+                //add favourite respnsor
+                ((ImageNameViewHolder)holder).addfavorbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       // addFavorite();
+                    }
+                });
                 break;
 
         };
@@ -152,6 +166,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView metatitle;
         ImageButton buylistbutton;
         RelativeLayout imgnamelayout;
+        ImageButton addfavorbutton;
 
         public ImageNameViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -160,6 +175,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             metatitle = itemView.findViewById(R.id.metartitle);
             buylistbutton = itemView.findViewById(R.id.buylistbutton);
             imgnamelayout = itemView.findViewById(R.id.imgnamelayout);
+            addfavorbutton = itemView.findViewById(R.id.favoritebutton);
         }
     }
+
+
+
 }
