@@ -1,5 +1,6 @@
 package com.example.navigation;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,14 +14,20 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.TwoLineListItem;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class Search extends AppCompatActivity{
 
@@ -29,6 +36,8 @@ public class Search extends AppCompatActivity{
     TextView mTvTip;
     TextView mhome;
     ListViewForScrollView mListView;
+    List list;
+
     TextView mTvClear;
 
     SimpleCursorAdapter adapter;
@@ -65,9 +74,6 @@ public class Search extends AppCompatActivity{
         });
 
     }
-
-
-
 
     private void initData(){
         searchSqliteHelper = new SearchSqliteHelper(this);
@@ -122,7 +128,8 @@ public class Search extends AppCompatActivity{
                         .hideSoftInputFromWindow(mEditSearch.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 //保存搜索记录
 
-                String searchWord = mTvSearch.getText().toString().trim();
+
+                String searchWord = mEditSearch.getText().toString().trim();
                 insertRecords(searchWord);
 
                 insertRecords(mEditSearch.getText().toString().trim());
@@ -204,8 +211,12 @@ public class Search extends AppCompatActivity{
                 String username = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
                 String password = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
                 Log.e("Skylark ", username + "---" + password);
+                //String searchWord = adapterView.getItemAtPosition(position).toString();
+                String searchWord = username;
+                insertRecords(searchWord);
                 Intent intent = new Intent(Search.this, SearchResult.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("searchWord", searchWord);
                 startActivity(intent);
 
             }
