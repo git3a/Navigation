@@ -15,6 +15,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.net.Uri;
+import android.provider.Settings;
+import android.widget.Toast;
 import java.util.List;
 
 import android.view.View;
@@ -56,7 +59,7 @@ public class  Recipe extends AppCompatActivity {
     private ArrayList<String> ingredient_names = new ArrayList<>();
     private ArrayList<String> ingredient_quantities = new ArrayList<>();
     private ArrayList<String> steps = new ArrayList<>();
-    private ArrayList<String> times = new ArrayList<>();
+    private ArrayList<Integer> times = new ArrayList<>();
 
     boolean locked = false;
     //    private TextView time;
@@ -112,42 +115,18 @@ public class  Recipe extends AppCompatActivity {
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //initStep();
-        //mTextMessage = (TextView) findViewById(R.id.message);
+        if (!Settings.canDrawOverlays(this)) {
+            Toast.makeText(this, "当前无权限，请授权", Toast.LENGTH_SHORT);
+            startActivityForResult(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())), 0);
+        } else {
 
-//        step3 = findViewById(R.id.step3);
-//        step3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startTime();
-//            }
-//        });
-//        progressBar = findViewById(R.id.progressBar);
-//        progressBar.setScaleY(10);
-//        vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
-//        player = MediaPlayer.create(Recipe.this, R.raw.ok);
-//
-//        loadRecipe();
+        }
     }
-//    private void initStep(){
-//        Log.d(TAG,"initStep: preparing steps");
-//        for(int i=0;i<10;i++){
-//            mIndex.add("Step1");
-//            mInner.add("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-//        }
-//        initRecyclerView();
-//    }
-
-    //    private void initRecyclerView(){
-//        Log.d(TAG, "initRecyclerView:init recyclerview of recipe");
-//        RecyclerView recyclerView = findViewById(R.id.recyclerView_recipe);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//    }
     private void dataset(){
         getRecipeData();
         Iterator it_name = ingredient_names.iterator();
         Iterator it_qu = ingredient_quantities.iterator();
+        Iterator it_time = times.iterator();
         Iterator it_step = steps.iterator();
         arrayList = new ArrayList<>();
         //recipe imageurl & recipe name holder here
@@ -162,7 +141,7 @@ public class  Recipe extends AppCompatActivity {
 
             String stepnum = String.format("ステップ %d", i);
             i++;
-            arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE,stepnum,(String)it_step.next()));
+            arrayList.add(new RecipetModel(RecipetModel.STEP_TYPE, stepnum, (String)it_step.next(), (Integer)it_time.next()));
         }
     }
 
@@ -210,7 +189,7 @@ public class  Recipe extends AppCompatActivity {
                         steps.add(step[i]);
                     }
                     for (int i = 0; i < time.length; i++) {
-                        times.add(time[i]);
+                        times.add(Integer.parseInt(time[i]));
                     }
                     locked = false;
                 }catch (Exception e) {
@@ -221,37 +200,6 @@ public class  Recipe extends AppCompatActivity {
         while(locked) {System.out.println("locked");}
     }
 
-//    private Handler mHandler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            //time.setText(msg.arg1 + "");
-//            progressBar.setProgress(msg.arg1*10);
-//            startTime();
-//        };
-//    };
-//
-//    public void startTime() {
-//        timer = new Timer();
-//        task = new TimerTask() {
-//
-//            @Override
-//            public void run() {
-//                if (i > 0) {   //加入判断不能小于0
-//                    i--;
-//                    Message message = mHandler.obtainMessage();
-//                    message.arg1 = i;
-//                    mHandler.sendMessage(message);
-//                } else if (i == 0) {
-//                    vibrator.vibrate(2000);
-//                    player.start();
-//                    i--;
-//                }
-//            }
-//        };
-//        timer.schedule(task, 1000);
-//    }
-//
-//    public void stopTime(){
-//        timer.cancel();
-//    }
+
 
 }

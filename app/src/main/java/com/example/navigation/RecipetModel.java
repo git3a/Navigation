@@ -6,6 +6,7 @@ public class RecipetModel {
 
     private String mStepIndex;
     private String mStepInner;
+    private Integer mStepTime;
 
     private String mMetaName;
     private String mMetaQuantity;
@@ -42,11 +43,12 @@ public class RecipetModel {
     public static final int STEP_TYPE = 2;
     public static final int IMGNAME_TYPE = 3;
 
-    public RecipetModel(int type, String mStepIndex, String mStepInner) {
+    public RecipetModel(int type, String mStepIndex, String mStepInner, Integer mStepTime) {
         //this.title = title;
         this.type = type;
         this.mStepIndex = mStepIndex;
         this.mStepInner = mStepInner;
+        this.mStepTime = mStepTime;
     }
 
     public RecipetModel(int type, String mMetaName, String mMetaQuantity,boolean t) {
@@ -110,5 +112,9 @@ public class RecipetModel {
 
     public void setmStepInner(String mStepInner) {
         this.mStepInner = mStepInner;
+    }
+
+    public Integer getmStepTime() {
+        return mStepTime;
     }
 }

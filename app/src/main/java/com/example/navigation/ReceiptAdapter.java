@@ -1,5 +1,6 @@
 package com.example.navigation;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.app.Service;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -80,10 +82,16 @@ public class ReceiptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case RecipetModel.STEP_TYPE:
                 ((StepViewHolder)holder).stepindex.setText(model.getmStepIndex());
                 ((StepViewHolder)holder).stepinner.setText(model.getmStepInner());
+                final Integer stepTime = model.getmStepTime();
                 ((StepViewHolder)holder).steplayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.d(TAG,"onclick: step clicked on:" );
+                        //if (FloatingTime.isStarted) return;
+                        if (stepTime == 0) return;
+                        Intent intent =  new Intent(mContext, FloatingTime.class);
+                        intent.putExtra("time",stepTime);
+                        mContext.startService(intent);
                     }
                 });
                 break;
