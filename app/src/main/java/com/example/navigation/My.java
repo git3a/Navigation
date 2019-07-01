@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.EOFException;
@@ -36,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.*;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
+
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 public class My extends AppCompatActivity {
@@ -121,7 +122,8 @@ public class My extends AppCompatActivity {
             }
         });
         try {
-            Picasso.get().load(myurl).into(imageView);
+            //Picasso.get().load(myurl).into(imageView);
+            GlideApp.with(this).load(myurl).placeholder(R.drawable.yuan).into(imageView);
         } catch (Exception e) {
             e.printStackTrace();
 
