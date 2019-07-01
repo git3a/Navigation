@@ -3,7 +3,6 @@ package com.example.navigation;
 import java.util.*;
 import java.util.List;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -118,7 +117,7 @@ public class Menu extends AppCompatActivity {
         n.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Menu.this,Notification.class);
+                Intent intent = new Intent(Menu.this, Notification.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
