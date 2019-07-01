@@ -2,7 +2,6 @@ package com.example.navigation;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
