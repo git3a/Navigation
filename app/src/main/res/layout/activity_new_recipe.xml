@@ -84,32 +84,33 @@
                 android:text="材料の削除" />
         </LinearLayout>
 
-        <ScrollView
+
+        <LinearLayout
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/My_material_layout"
-                android:layout_width="match_parent"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            </LinearLayout>
-
-        </ScrollView>
+                android:orientation="vertical"
+                android:layout_gravity="start"/>
 
 
 
+            <LinearLayout
+                    android:id="@+id/My_amount_layout"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="end"/>
 
 
-        <Spinner
-            android:id="@+id/recipe_type"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autofillHints="種類を選択してください"
-            android:prompt="@string/recipe_type"
-            android:entries="@array/recipetypelist">
-        </Spinner>
+
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -128,20 +129,27 @@
 
         </LinearLayout>
 
-        <ScrollView
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/My_step_layout"
-                android:layout_width="match_parent"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="start"/>
 
-            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/My_time_layout"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="end"/>
 
-        </ScrollView>
 
+        </LinearLayout>
 
 
 

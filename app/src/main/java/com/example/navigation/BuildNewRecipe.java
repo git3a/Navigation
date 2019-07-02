@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,12 +31,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -62,15 +66,24 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     private Button btn_add_step;
     private Button btn_del_step;
     private Button btn_save_to_db;
-    private ArrayList<EditText> editTexts; //material list
-    private ArrayList<EditText> editTexts2; //step list
+    private ArrayList<EditText> editTexts; // material list
+    private ArrayList<EditText> editTexts2; // step list
+    private ArrayList<EditText> editTexts3; // amount list
+    private ArrayList<EditText> editTexts4; // time list
     private int i = -1;
     private int j = -1;
+    private int l = -1;
+    private int k = -1;
     private LinearLayout my_layout;
     private LinearLayout my_layout_step;
+    private LinearLayout my_layout_amount;
+    private LinearLayout my_layout_time;
     private EditText editname;
-    private EditText editText1;
-    private EditText editText2;
+    private String myurl;
+    private EditText editText1; // material
+    private EditText editText2; // step
+    private EditText editText3; // amount
+    private EditText editText4; // time
     private ImageView imageView;
 
 
@@ -123,6 +136,8 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_new_recipe);
         editTexts = new ArrayList<>();
         editTexts2 = new ArrayList<>();
+        editTexts3 = new ArrayList<>();
+        editTexts4 = new ArrayList<>();
         initView();
         imageView = findViewById(R.id.cuisine_image);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +154,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_add_material:
+                //addAmountView();
                 addView();
                 break;
             case R.id.btn_delete_material:
@@ -160,21 +176,34 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.ButtonSendRecipe:
                 String rname = editname.getText().toString();
+                String url = myurl;
                 ArrayList<String> my_materials = new ArrayList<>();
                 ArrayList<String> my_steps = new ArrayList<>();
+                ArrayList<String> my_amount = new ArrayList<>();
+                ArrayList<String> my_time = new ArrayList<>();
+
                 for(int i = 0;i < editTexts.size();i++){
                     System.out.println(editTexts.get(i).getText().toString());
                     my_materials.add(editTexts.get(i).getText().toString());
                 }
 
-                System.out.println("----------");
 
                 for(int j = 0;j < editTexts2.size(); j++){
                     System.out.println(editTexts2.get(j).getText().toString());
                     my_steps.add(editTexts2.get(j).getText().toString());
                 }
 
-                sendRecipeBack(rname ,my_materials, my_steps);
+                for (int k=0;k< editTexts3.size();k++){
+                    System.out.print(editTexts3.get(k).getText().toString());
+                    my_amount.add(editTexts3.get(k).getText().toString());
+                }
+
+                for (int l=0;l< editTexts4.size();l++){
+                    System.out.println(editTexts4.get(l).getText().toString());
+                    my_time.add(editTexts4.get(l).getText().toString());
+                }
+
+                sendRecipeBack(rname ,url,my_materials, my_amount,my_steps,my_time);
                 break;
         }
 
@@ -182,25 +211,25 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initView() {
-        //navigation
+        // navigation
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //dynamics buttons
+        // dynamics buttons
         btn_add_material = findViewById(R.id.btn_add_material);
         btn_del_material = findViewById(R.id.btn_delete_material);
         btn_add_step = findViewById(R.id.btn_add_step);
         btn_del_step = findViewById(R.id.btn_delete_step);
         btn_save_to_db = findViewById(R.id.ButtonSendRecipe);
+        // recipe name input
         editname = findViewById(R.id.EditRecipename);
+        // back to homepage
         mhome = (TextView)findViewById(R.id.home_buttonPanel);
+        // buttons' listeners
         btn_add_material.setOnClickListener(this);
         btn_del_material.setOnClickListener(this);
         btn_add_step.setOnClickListener(this);
         btn_del_step.setOnClickListener(this);
         btn_save_to_db.setOnClickListener(this);
-
-
-
 
         //back to homepage
         mhome.setFocusable(false);
@@ -224,22 +253,50 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         editText1.setHintTextColor(Color.GRAY);
         editText1.setWidth(300);
         editText1.setHeight(100);
+        editText1.setGravity(Gravity.START);
         editText1.setHint("材料"+(i+1));
         editText1.setTop(10);
-        editText1.setSingleLine(true);
+        editText1.setSingleLine(false);
         editText1.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
         editText1.setMovementMethod(LinkMovementMethod.getInstance());
         editTexts.add(i, editText1);
         Log.d(TAG, "addView---------"+i);
         my_layout.addView(editText1);
+
+        my_layout_amount = findViewById(R.id.My_amount_layout);
+        editText3 = new EditText(this);
+        l++;
+        Log.d(TAG,"addAmountView:--------"+editText3.toString());
+        editText3.setHintTextColor(Color.GRAY);
+        editText3.setWidth(80);
+        editText3.setHeight(100);
+        editText3.setHint("量"+(l+1));
+        editText3.setGravity(Gravity.RIGHT);
+        editText3.setTop(10);
+        editText3.setSingleLine(true);
+        editText3.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
+        editText3.setMovementMethod(LinkMovementMethod.getInstance());
+        editTexts3.add(l, editText3);
+        Log.d(TAG, "addAmout-------"+l);
+        my_layout_amount.addView(editText3);
+
+
     }
 
     public void deleteView(){
+        //delete material view
         EditText editText = editTexts.get(i);
         my_layout.removeView(editText);
         editTexts.remove(i);
         i--;
         Log.d(TAG, "deleteView-----"+i);
+
+        //delete amount view
+        EditText editText_amount = editTexts3.get(l);
+        my_layout_amount.removeView(editText_amount);
+        editTexts3.remove(l);
+        l--;
+        Log.d(TAG, "deleteAmount----" + l);
     }
 
     public void addStepView(){
@@ -258,7 +315,24 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         editTexts2.add(j, editText2);
         Log.d(TAG, "addView---------"+j);
         my_layout_step.addView(editText2);
+
+        my_layout_time = findViewById(R.id.My_time_layout);
+        editText4 = new EditText(this);
+        k++;
+        Log.d(TAG, "addTimeView:----" + editText4.toString());
+        editText4.setHintTextColor(Color.GRAY);
+        editText4.setWidth(80);
+        editText4.setHeight(100);
+        editText4.setHint("時間"+(k+1));
+        editText4.setTop(10);
+        editText4.setSingleLine(true);
+        editText4.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
+        editText4.setMovementMethod(LinkMovementMethod.getInstance());
+        editTexts4.add(k, editText4);
+        Log.d(TAG, "addTime-----"+k);
+        my_layout_time.addView(editText4);
     }
+
 
     public void deleteStepView(){
         EditText editText2 = editTexts2.get(j);
@@ -266,6 +340,12 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         editTexts2.remove(j);
         j--;
         Log.d(TAG, "deleteView-----"+j);
+
+        EditText editText_time = editTexts4.get(k);
+        my_layout_time.removeView(editText4);
+        editTexts4.remove(k);
+        k--;
+        Log.d(TAG, "deleteTime-----"+k);
     }
 
 
@@ -386,38 +466,37 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
                 public void onResponse(Call call, Response response) throws IOException {
                     String string = response.body().string();
                     System.out.println(string);
-
+                    Map<String, String> map = (Map) JSONObject.parse(string);
+                    myurl = map.get("url");
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-//    public void sendRecipeBack(View Button){
-////        final EditText nameField = (EditText)findViewById(R.id.EditRecipename);
-////        String name = nameField.getText().toString();
-////
-////        //final EditText materialField = (EditText)findViewById(R.id.Input_material);
-////        //String material = materialField.getText().toString();
-////
-////        //final EditText stepField = (EditText)findViewById(R.id.EditRecipeStep);
-////        //String Step = stepField.getText().toString();
-////
-////        final Spinner recipeTypeField = (Spinner)findViewById(R.id.recipe_type);
-////        String recipeType = recipeTypeField.getSelectedItem().toString();
-//
-//    }
 
-    private void sendRecipeBack(String rname, ArrayList<String> rmaterial, ArrayList<String> rsteps){
+
+    private void sendRecipeBack(String rname, String img_url,ArrayList<String> rmaterial,
+                                ArrayList<String> ramount, ArrayList<String> rsteps, ArrayList<String> rtime){
         Request.Builder reqBuild = new Request.Builder().get();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertRecipe").
                 newBuilder();
         urlBuilder.addQueryParameter("name", rname);
+        urlBuilder.addQueryParameter("url",img_url);
         urlBuilder.addQueryParameter("material", rmaterial.toString());
+        urlBuilder.addQueryParameter("amount",ramount.toString());
         urlBuilder.addQueryParameter("steps", rsteps.toString());
+        urlBuilder.addQueryParameter("times", rtime.toString());
+
+        System.out.println("The saved information --------------");
         System.out.println(rname);
+        System.out.println(img_url);
         System.out.println(rmaterial.toString());
+        System.out.println(ramount.toString());
         System.out.println(rsteps.toString());
+        System.out.println(rtime.toString());
+
+
         OkHttpClient okHttpClient = new OkHttpClient();
         reqBuild.url(urlBuilder.build());
         Request request = reqBuild.build();
