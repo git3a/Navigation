@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -59,15 +61,19 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     private Button btn_del_material;
     private Button btn_add_step;
     private Button btn_del_step;
-    private ArrayList<EditText> editTexts;
-    private ArrayList<EditText> editTexts2;
+    private Button btn_save_to_db;
+    private ArrayList<EditText> editTexts; //material list
+    private ArrayList<EditText> editTexts2; //step list
     private int i = -1;
     private int j = -1;
     private LinearLayout my_layout;
     private LinearLayout my_layout_step;
+    private EditText editname;
     private EditText editText1;
     private EditText editText2;
     private ImageView imageView;
+
+
 
 
     private String filePath;
@@ -152,7 +158,27 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(this,"入力済みステップがありません",Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.ButtonSendRecipe:
+                String rname = editname.getText().toString();
+                ArrayList<String> my_materials = new ArrayList<>();
+                ArrayList<String> my_steps = new ArrayList<>();
+                for(int i = 0;i < editTexts.size();i++){
+                    System.out.println(editTexts.get(i).getText().toString());
+                    my_materials.add(editTexts.get(i).getText().toString());
+                }
+
+                System.out.println("----------");
+
+                for(int j = 0;j < editTexts2.size(); j++){
+                    System.out.println(editTexts2.get(j).getText().toString());
+                    my_steps.add(editTexts2.get(j).getText().toString());
+                }
+
+                sendRecipeBack(rname ,my_materials, my_steps);
+                break;
         }
+
+
     }
 
     private void initView() {
@@ -164,11 +190,18 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         btn_del_material = findViewById(R.id.btn_delete_material);
         btn_add_step = findViewById(R.id.btn_add_step);
         btn_del_step = findViewById(R.id.btn_delete_step);
+        btn_save_to_db = findViewById(R.id.ButtonSendRecipe);
+        editname = findViewById(R.id.EditRecipename);
         mhome = (TextView)findViewById(R.id.home_buttonPanel);
         btn_add_material.setOnClickListener(this);
         btn_del_material.setOnClickListener(this);
         btn_add_step.setOnClickListener(this);
         btn_del_step.setOnClickListener(this);
+        btn_save_to_db.setOnClickListener(this);
+
+
+
+
         //back to homepage
         mhome.setFocusable(false);
         mhome.setOnClickListener(new View.OnClickListener() {
@@ -179,14 +212,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
             }
         });
-        //upload images
 
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showChoosePicDialog();
-//            }
-//        });
     }
 
 
@@ -367,18 +393,48 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
         }
     }
-    public void sendRecipeBack(View Button){
-        final EditText nameField = (EditText)findViewById(R.id.EditRecipename);
-        String name = nameField.getText().toString();
+//    public void sendRecipeBack(View Button){
+////        final EditText nameField = (EditText)findViewById(R.id.EditRecipename);
+////        String name = nameField.getText().toString();
+////
+////        //final EditText materialField = (EditText)findViewById(R.id.Input_material);
+////        //String material = materialField.getText().toString();
+////
+////        //final EditText stepField = (EditText)findViewById(R.id.EditRecipeStep);
+////        //String Step = stepField.getText().toString();
+////
+////        final Spinner recipeTypeField = (Spinner)findViewById(R.id.recipe_type);
+////        String recipeType = recipeTypeField.getSelectedItem().toString();
+//
+//    }
 
-        //final EditText materialField = (EditText)findViewById(R.id.Input_material);
-        //String material = materialField.getText().toString();
+    private void sendRecipeBack(String rname, ArrayList<String> rmaterial, ArrayList<String> rsteps){
+        Request.Builder reqBuild = new Request.Builder().get();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertRecipe").
+                newBuilder();
+        urlBuilder.addQueryParameter("name", rname);
+        urlBuilder.addQueryParameter("material", rmaterial.toString());
+        urlBuilder.addQueryParameter("steps", rsteps.toString());
+        System.out.println(rname);
+        System.out.println(rmaterial.toString());
+        System.out.println(rsteps.toString());
+        OkHttpClient okHttpClient = new OkHttpClient();
+        reqBuild.url(urlBuilder.build());
+        Request request = reqBuild.build();
 
-        //final EditText stepField = (EditText)findViewById(R.id.EditRecipeStep);
-        //String Step = stepField.getText().toString();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String err = e.getMessage();
+                System.out.print(err);
+            }
 
-        final Spinner recipeTypeField = (Spinner)findViewById(R.id.recipe_type);
-        String recipeType = recipeTypeField.getSelectedItem().toString();
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                System.out.println("Onresponse");
+            }
+        });
 
     }
 
