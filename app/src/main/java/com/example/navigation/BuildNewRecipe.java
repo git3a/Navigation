@@ -70,20 +70,24 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     private ArrayList<EditText> editTexts2; // step list
     private ArrayList<EditText> editTexts3; // amount list
     private ArrayList<EditText> editTexts4; // time list
+    private ArrayList<EditText> timeTexts; // minute list
     private int i = -1;
     private int j = -1;
     private int l = -1;
     private int k = -1;
+    private int m = -1;
     private LinearLayout my_layout;
     private LinearLayout my_layout_step;
     private LinearLayout my_layout_amount;
     private LinearLayout my_layout_time;
+    private LinearLayout my_layout_min;
     private EditText editname;
     private String myurl;
     private EditText editText1; // material
     private EditText editText2; // step
     private EditText editText3; // amount
     private EditText editText4; // time
+    private EditText time_text; // minute
     private ImageView imageView;
 
 
@@ -138,6 +142,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         editTexts2 = new ArrayList<>();
         editTexts3 = new ArrayList<>();
         editTexts4 = new ArrayList<>();
+        timeTexts = new ArrayList<>();
         initView();
         imageView = findViewById(R.id.cuisine_image);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +195,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
 
                 for(int j = 0;j < editTexts2.size(); j++){
                     System.out.println(editTexts2.get(j).getText().toString());
+
                     my_steps.add(editTexts2.get(j).getText().toString());
                 }
 
@@ -331,6 +337,25 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         editTexts4.add(k, editText4);
         Log.d(TAG, "addTime-----"+k);
         my_layout_time.addView(editText4);
+
+        my_layout_min = findViewById(R.id.My_minute_layout);
+        time_text = new EditText(this);
+        m++;
+        Log.d(TAG, "addMinView------" + time_text.toString());
+        time_text.setHintTextColor(Color.GRAY);
+        time_text.setWidth(80);
+        time_text.setHeight(100);
+        time_text.setText(getString(R.string.txtText));
+        //time_text.setTextSize(20);
+        time_text.setTop(10);
+        time_text.setSingleLine(true);
+        time_text.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
+        time_text.setMovementMethod(LinkMovementMethod.getInstance());
+        time_text.setEnabled(false);
+        timeTexts.add(m,time_text);
+        Log.d(TAG, "addmin-----"+m);
+        my_layout_min.addView(time_text);
+
     }
 
 
@@ -342,10 +367,16 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         Log.d(TAG, "deleteView-----"+j);
 
         EditText editText_time = editTexts4.get(k);
-        my_layout_time.removeView(editText4);
+        my_layout_time.removeView(editText_time);
         editTexts4.remove(k);
         k--;
         Log.d(TAG, "deleteTime-----"+k);
+
+        TextView min_text = timeTexts.get(m);
+        my_layout_min.removeView(min_text);
+        timeTexts.remove(m);
+        m--;
+        Log.d(TAG, "deletemin----"+m);
     }
 
 
@@ -408,11 +439,11 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    cutImage(photoUri); // 对图片进行裁剪处理
+                    //cutImage(photoUri); // 对图片进行裁剪处理
                     //imageView.setImageURI(photoUri);
                     break;
                 case CHOOSE_PICTURE:
-                    cutImage(data.getData()); // 对图片进行裁剪处理
+                    //cutImage(data.getData()); // 对图片进行裁剪处理
                     break;
                 case CROP_SMALL_PICTURE:
                     if (tempUri != null) {
@@ -425,26 +456,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
-    protected void cutImage(Uri uri) {
-        if (uri == null) {
-            Log.i("alanjet", "The uri is not exist.");
-        }
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        //com.android.camera.action.CROP这个action是用来裁剪图片用的
-        intent.setDataAndType(uri, "image/*");
-        // 设置裁剪
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 1000);
-        intent.putExtra("outputY", 1000);
-        intent.putExtra("return-data", false);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        startActivityForResult(intent, CROP_SMALL_PICTURE);
-    }
+
     protected void setImageToView() {
         imageView.setImageURI(tempUri);
     }
@@ -481,21 +493,24 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         Request.Builder reqBuild = new Request.Builder().get();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertRecipe").
                 newBuilder();
+        StringBuffer sb = new StringBuffer();
+        for(String s:rmaterial){
+            sb.append(s);
+        }
+
         urlBuilder.addQueryParameter("name", rname);
         urlBuilder.addQueryParameter("url",img_url);
-        urlBuilder.addQueryParameter("material", rmaterial.toString());
+        urlBuilder.addQueryParameter("material", sb.toString());
         urlBuilder.addQueryParameter("amount",ramount.toString());
         urlBuilder.addQueryParameter("steps", rsteps.toString());
-        urlBuilder.addQueryParameter("times", rtime.toString());
 
         System.out.println("The saved information --------------");
         System.out.println(rname);
         System.out.println(img_url);
-        System.out.println(rmaterial.toString());
+        System.out.println(sb.toString());
         System.out.println(ramount.toString());
         System.out.println(rsteps.toString());
         System.out.println(rtime.toString());
-
 
         OkHttpClient okHttpClient = new OkHttpClient();
         reqBuild.url(urlBuilder.build());

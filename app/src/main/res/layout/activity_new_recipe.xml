@@ -143,11 +143,16 @@
 
             <LinearLayout
                 android:id="@+id/My_time_layout"
-                android:layout_width="80dp"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:id="@+id/My_minute_layout"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_gravity="end"/>
-
+                android:layout_gravity="bottom" />
 
         </LinearLayout>
 

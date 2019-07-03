@@ -9,4 +9,5 @@
     <string name="recipe_type2">西洋料理</string>
     <string name="recipe_type3">中華料理</string>
     <string name="recipe_type4">その他</string>
+    <string name="txtText">分</string>
 </resources>
