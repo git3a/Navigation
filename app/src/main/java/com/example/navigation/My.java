@@ -145,7 +145,7 @@ public class My extends AppCompatActivity {
         f.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(My.this,Favorite.class);
+                Intent intent = new Intent(My.this,MyRecipe.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }

@@ -17,7 +17,7 @@ public class Notification extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Notification.this,Menu.class);
+                Intent intent = new Intent(Notification.this,My.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
