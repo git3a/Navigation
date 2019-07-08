@@ -439,11 +439,11 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    //cutImage(photoUri); // 对图片进行裁剪处理
+                    cutImage(photoUri); // 对图片进行裁剪处理
                     //imageView.setImageURI(photoUri);
                     break;
                 case CHOOSE_PICTURE:
-                    //cutImage(data.getData()); // 对图片进行裁剪处理
+                    cutImage(data.getData()); // 对图片进行裁剪处理
                     break;
                 case CROP_SMALL_PICTURE:
                     if (tempUri != null) {
@@ -455,6 +455,26 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
                     break;
             }
         }
+    }
+    protected void cutImage(Uri uri) {
+        if (uri == null) {
+            Log.i("alanjet", "The uri is not exist.");
+        }
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        //com.android.camera.action.CROP这个action是用来裁剪图片用的
+        intent.setDataAndType(uri, "image/*");
+        // 设置裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 1000);
+        intent.putExtra("outputY", 1000);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 
     protected void setImageToView() {
@@ -503,6 +523,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         urlBuilder.addQueryParameter("material", sb.toString());
         urlBuilder.addQueryParameter("amount",ramount.toString());
         urlBuilder.addQueryParameter("steps", rsteps.toString());
+        urlBuilder.addQueryParameter("time", rtime.toString());
 
         System.out.println("The saved information --------------");
         System.out.println(rname);
