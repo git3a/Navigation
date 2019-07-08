@@ -61,7 +61,9 @@
         <activity android:name=".Search"></activity>
         <activity android:name=".BuildNewRecipe"></activity>
         <activity android:name=".Notification"></activity>
+        <activity android:name=".MyRecipe"></activity>
         <service android:name=".FloatingTime"></service>
+
 
 
     </application>
