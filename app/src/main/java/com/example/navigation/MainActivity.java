@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
     }
     private void getUserData(String uname) {
         Request.Builder reqBuild = new Request.Builder().get();
+//        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://169.254.180.242:8000/getuser")
+//                .newBuilder();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getuser")
                 .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getuser/")

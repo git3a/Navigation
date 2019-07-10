@@ -18,20 +18,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="350dp"
-                android:layout_height="50dp"
-                android:text="レシピのアップロード"
-                android:textSize="15pt"/>
+             <TextView
+                 android:id="@+id/title"
+                 android:layout_width="302dp"
+                 android:layout_height="50dp"
+                 android:text="レシピのアップロード"
+                 android:textSize="15pt" />
 
-            <TextView
-                android:id="@+id/home_buttonPanel"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:drawableRight="@drawable/ic_home_black_24dp"
-                android:gravity="center"
-                android:textSize="18sp" />
+             <TextView
+                 android:id="@+id/home_buttonPanel"
+                 android:layout_width="40dp"
+                 android:layout_height="match_parent"
+                 android:drawableRight="@drawable/ic_home_black_24dp"
+                 android:gravity="center"
+                 android:textSize="18sp" />
 
 
 
@@ -73,13 +73,13 @@
 
             <Button
                 android:id="@+id/btn_add_material"
-                android:layout_width="200dp"
+                android:layout_width="168dp"
                 android:layout_height="wrap_content"
                 android:text="材料の入力" />
 
             <Button
                 android:id="@+id/btn_delete_material"
-                android:layout_width="200dp"
+                android:layout_width="168dp"
                 android:layout_height="wrap_content"
                 android:text="材料の削除" />
         </LinearLayout>
@@ -117,13 +117,13 @@
             android:layout_height="wrap_content">
             <Button
                 android:id="@+id/btn_add_step"
-                android:layout_width="200dp"
+                android:layout_width="168dp"
                 android:layout_height="wrap_content"
                 android:text="ステップの入力"/>
 
             <Button
                 android:id="@+id/btn_delete_step"
-                android:layout_width="200dp"
+                android:layout_width="168dp"
                 android:layout_height="wrap_content"
                 android:text="ステップの削除"/>
 

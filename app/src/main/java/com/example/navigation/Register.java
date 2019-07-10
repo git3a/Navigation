@@ -109,8 +109,8 @@ public class Register extends AppCompatActivity {
             Request.Builder reqBuild = new Request.Builder().get();
             HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insert")
                    .newBuilder();
-            //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/insert")
-            //        .newBuilder();
+//            HttpUrl.Builder urlBuilder = HttpUrl.parse("http://169.254.180.242:8000/insert")
+//                    .newBuilder();
             urlBuilder.addQueryParameter("user", uname);
             urlBuilder.addQueryParameter("email", email);
             urlBuilder.addQueryParameter("password", pass);

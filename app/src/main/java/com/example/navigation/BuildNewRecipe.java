@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -182,30 +183,31 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
             case R.id.ButtonSendRecipe:
                 String rname = editname.getText().toString();
                 String url = myurl;
+                System.out.println(url);
                 ArrayList<String> my_materials = new ArrayList<>();
                 ArrayList<String> my_steps = new ArrayList<>();
                 ArrayList<String> my_amount = new ArrayList<>();
                 ArrayList<String> my_time = new ArrayList<>();
 
                 for(int i = 0;i < editTexts.size();i++){
-                    System.out.println(editTexts.get(i).getText().toString());
+                   // System.out.println(editTexts.get(i).getText().toString());
                     my_materials.add(editTexts.get(i).getText().toString());
                 }
 
 
                 for(int j = 0;j < editTexts2.size(); j++){
-                    System.out.println(editTexts2.get(j).getText().toString());
+                    //System.out.println(editTexts2.get(j).getText().toString());
 
                     my_steps.add(editTexts2.get(j).getText().toString());
                 }
 
                 for (int k=0;k< editTexts3.size();k++){
-                    System.out.print(editTexts3.get(k).getText().toString());
+                    //System.out.print(editTexts3.get(k).getText().toString());
                     my_amount.add(editTexts3.get(k).getText().toString());
                 }
 
                 for (int l=0;l< editTexts4.size();l++){
-                    System.out.println(editTexts4.get(l).getText().toString());
+                    //System.out.println(editTexts4.get(l).getText().toString());
                     my_time.add(editTexts4.get(l).getText().toString());
                 }
 
@@ -468,13 +470,14 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         // aspectX aspectY 是宽高的比例
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
+        // outputX outputY 是裁剪图片宽高　
         intent.putExtra("outputX", 1000);
         intent.putExtra("outputY", 1000);
         intent.putExtra("return-data", false);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, CROP_SMALL_PICTURE);
+
     }
 
     protected void setImageToView() {
@@ -487,7 +490,8 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
 
             RequestBody body = RequestBody.create(MediaType.parse("image/*"), temp);
             requestBody.addFormDataPart("file", temp.getName(), body);
-            Request request = new Request.Builder().url("http://localhost:8000//back_end/uploadImage").post(requestBody.build()).build();
+            Request request = new Request.Builder().url("http://35.222.222.232/back_end/uploadImage").post(requestBody.build()).build();
+            // the url was localhose before
             client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -513,25 +517,46 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         Request.Builder reqBuild = new Request.Builder().get();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/insertRecipe").
                 newBuilder();
-        StringBuffer sb = new StringBuffer();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo",MODE_PRIVATE);
+        String user_id = sharedPreferences.getString("userid", "");
+        // process string for material
+        StringBuffer sb_material = new StringBuffer();
         for(String s:rmaterial){
-            sb.append(s);
+            sb_material.append(s+"\r");
+        }
+        // process string for amount
+        StringBuffer sb_amount = new StringBuffer();
+        for(String s:ramount){
+            sb_amount.append(s+"\r");
+        }
+        //process string for rsteps
+        StringBuffer sb_step = new StringBuffer();
+        for(String s:rsteps){
+            sb_step.append(s+"\r");
+        }
+        //process string for rtime
+        StringBuffer sb_time = new StringBuffer();
+        for(String s:rtime){
+            sb_time.append(s+"\r");
         }
 
+        urlBuilder.addQueryParameter("user_id",user_id);
         urlBuilder.addQueryParameter("name", rname);
-        urlBuilder.addQueryParameter("url",img_url);
-        urlBuilder.addQueryParameter("material", sb.toString());
-        urlBuilder.addQueryParameter("amount",ramount.toString());
-        urlBuilder.addQueryParameter("steps", rsteps.toString());
-        urlBuilder.addQueryParameter("time", rtime.toString());
+        urlBuilder.addQueryParameter("img_url",img_url);
+        urlBuilder.addQueryParameter("material", sb_material.toString());
+        urlBuilder.addQueryParameter("amount",sb_amount.toString());
+        urlBuilder.addQueryParameter("steps", sb_step.toString());
+        urlBuilder.addQueryParameter("time", sb_time.toString());
 
         System.out.println("The saved information --------------");
+        System.out.println(user_id);
         System.out.println(rname);
         System.out.println(img_url);
-        System.out.println(sb.toString());
-        System.out.println(ramount.toString());
-        System.out.println(rsteps.toString());
-        System.out.println(rtime.toString());
+        System.out.println(sb_material.toString());
+        System.out.println(sb_amount.toString());
+        System.out.println(sb_step.toString());
+        System.out.println(sb_time.toString());
 
         OkHttpClient okHttpClient = new OkHttpClient();
         reqBuild.url(urlBuilder.build());
