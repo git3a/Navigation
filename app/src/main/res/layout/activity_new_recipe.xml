@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
     <LinearLayout
+        android:background="@color/beige"
         android:layout_width="fill_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
@@ -23,7 +24,7 @@
                  android:layout_width="302dp"
                  android:layout_height="50dp"
                  android:text="レシピのアップロード"
-                 android:textSize="15pt" />
+                 android:textSize="12pt" />
 
              <TextView
                  android:id="@+id/home_buttonPanel"
@@ -32,7 +33,6 @@
                  android:drawableRight="@drawable/ic_home_black_24dp"
                  android:gravity="center"
                  android:textSize="18sp" />
-
 
 
         </LinearLayout>

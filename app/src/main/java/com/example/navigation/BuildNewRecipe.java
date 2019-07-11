@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -515,6 +516,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     }
 
 
+
     private void sendRecipeBack(String rname, String img_url,ArrayList<String> rmaterial,
                                 ArrayList<String> ramount, ArrayList<String> rsteps, ArrayList<String> rtime){
         Request.Builder reqBuild = new Request.Builder().get();
@@ -552,6 +554,8 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         urlBuilder.addQueryParameter("steps", sb_step.toString());
         urlBuilder.addQueryParameter("time", sb_time.toString());
 
+
+
         System.out.println("The saved information --------------");
         System.out.println(user_id);
         System.out.println(rname);
@@ -579,6 +583,11 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+        Toast.makeText(BuildNewRecipe.this,"保存成功",Toast.LENGTH_LONG).show();
+        Intent intent = new Intent();
+        intent.setClass(BuildNewRecipe.this, BuildNewRecipe.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 
 }
