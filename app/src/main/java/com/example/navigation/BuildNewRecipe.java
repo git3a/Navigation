@@ -491,7 +491,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
 
             RequestBody body = RequestBody.create(MediaType.parse("image/*"), temp);
             requestBody.addFormDataPart("file", temp.getName(), body);
-            Request request = new Request.Builder().url("http://35.222.222.232/back_end/uploadImage").post(requestBody.build()).build();
+            Request request = new Request.Builder().url("http://35.222.222.232/uploadImage/").post(requestBody.build()).build();
             // the url was localhose before
             client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
                 @Override
@@ -513,7 +513,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     }
 
 
-
+    private boolean lock = true; // thread lock
     private void sendRecipeBack(String rname, String img_url,ArrayList<String> rmaterial,
                                 ArrayList<String> ramount, ArrayList<String> rsteps, ArrayList<String> rtime){
         Request.Builder reqBuild = new Request.Builder().get();
@@ -577,14 +577,19 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 System.out.println("Onresponse");
+
+//                Intent intent = new Intent();
+//                intent.setClass(BuildNewRecipe.this, BuildNewRecipe.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                lock = false;
             }
         });
-
+//        while (lock) {
+//        }
         Toast.makeText(BuildNewRecipe.this,"保存成功",Toast.LENGTH_LONG).show();
-        Intent intent = new Intent();
-        intent.setClass(BuildNewRecipe.this, BuildNewRecipe.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
+
+
     }
 
 }
