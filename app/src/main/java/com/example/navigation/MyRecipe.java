@@ -45,15 +45,17 @@ public class MyRecipe extends AppCompatActivity {
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<Integer> mIds = new ArrayList<>();
 
-    private java.util.List<String> name = new ArrayList<String>();
-    private java.util.List<String> picurl = new ArrayList<String>();
-    private java.util.List<Integer> id = new ArrayList<>();
+    private java.util.List<String> names = new ArrayList<String>();
+    private java.util.List<String> picurls = new ArrayList<String>();
+    private java.util.List<Integer> ids = new ArrayList<>();
 
     private java.util.List<String> mylists = new ArrayList<String>();
     private String recipename;
     private String imageUrl;
     private Integer count = 0;
     private Iterator it_list;
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -97,17 +99,7 @@ public class MyRecipe extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG,"initImageBitmaps: preparing bitmaps.");
         //Here to process your JSON, Leader.
-        getFavorite();
-        it_list = mylists.iterator();
-        while(it_list.hasNext() && count <= 6) {
-            String id = (String)it_list.next();
-            getRecipeData(id);
-            mImageUrls.add(imageUrl);
-            mNames.add(recipename);
-            mIds.add(Integer.parseInt(id));
-            count++;
-        }
-        count = 0;
+        getRecipeData();
         initRecyclerView();
     }
 
@@ -118,15 +110,8 @@ public class MyRecipe extends AppCompatActivity {
             @Override
             public void run() {
                 //Here to process your JSON, Leader.
-                while(it_list.hasNext() && count <= 6) {
-                    String id = (String)it_list.next();
-                    getRecipeData(id);
-                    mImageUrls.add(imageUrl);
-                    mNames.add(recipename);
-                    mIds.add(Integer.parseInt(id));
-                    count++;
-                }
-                count = 0;
+
+                getRecipeData();
 
                 staggeredRecyclerViewAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
@@ -178,14 +163,16 @@ public class MyRecipe extends AppCompatActivity {
             }
         });
     }
-    private void getRecipeData(String id) {
+    private void getRecipeData() {
         Request.Builder reqBuild = new Request.Builder().get();
         lock = true;
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getrecipebyid")
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getrecipebyUserid")
                 .newBuilder();
         //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getrecipebyid")
         //        .newBuilder();
-        urlBuilder.addQueryParameter("id", id);
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String userid = sharedPreferences.getString("userid", "");
+        urlBuilder.addQueryParameter("id", userid);
 
         OkHttpClient okHttpClient = new OkHttpClient();
         reqBuild.url(urlBuilder.build());
@@ -204,9 +191,11 @@ public class MyRecipe extends AppCompatActivity {
                 System.out.println("onResponse");
 
                 try {
-                    Map<String, String> map = (Map) JSONObject.parse(response.body().string());
-                    recipename = map.get("name");
-                    imageUrl = map.get("image");
+                    String m = response.body().string();
+                    Map<String, java.util.List> map = (Map) JSONObject.parse(m);
+                    names = map.get("name");
+                    picurls = map.get("image");
+                    ids = map.get("id");
                     lock = false;
                 }catch (Exception e) {
                     System.out.println(e);
@@ -214,44 +203,19 @@ public class MyRecipe extends AppCompatActivity {
             }
         });
         while(lock) {System.out.println("locked");}
-    }
-    private void getFavorite() {
-        lock = true;
-        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-        String userid = sharedPreferences.getString("userid", "");
+        Iterator it_name = names.iterator();
+        Iterator it_url = picurls.iterator();
+        Iterator it_id = ids.iterator();
+        while(it_name.hasNext() && it_url.hasNext()) {
+            String name = (String)it_name.next();
+            String url = (String)it_url.next();
+            Integer id = (Integer)it_id.next();
 
-        Request.Builder reqBuild = new Request.Builder().get();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://35.222.222.232/getFavoriteRecipeId")
-                .newBuilder();
-        //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.10:8000/getFavoriteRecipeId")
-        //        .newBuilder();
-        urlBuilder.addQueryParameter("id", userid);
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        reqBuild.url(urlBuilder.build());
-        Request request = reqBuild.build();
-
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                String err = e.getMessage();
-                System.out.println(err);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // final String data = response.body().string();
-                System.out.println("onResponse");
-
-                String m = response.body().string();
-                Map<String, List> map = (Map) JSONObject.parse(m);
-                mylists = map.get("favorite");
-                lock = false;
-            }
-
-        });
-        while (lock) {
+            mImageUrls.add(url);
+            mNames.add(name);
+            mIds.add(id);
+            lock = true;
         }
     }
+
 }

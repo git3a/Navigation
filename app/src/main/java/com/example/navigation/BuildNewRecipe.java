@@ -443,9 +443,12 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
                 case TAKE_PICTURE:
                     cutImage(photoUri); // 对图片进行裁剪处理
                     //imageView.setImageURI(photoUri);
+                    //uploadImage();
                     break;
                 case CHOOSE_PICTURE:
                     cutImage(data.getData()); // 对图片进行裁剪处理
+                    //imageView.setImageURI(data.getData());
+                    //uploadImage();
                     break;
                 case CROP_SMALL_PICTURE:
                     if (tempUri != null) {
@@ -490,7 +493,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
 
             RequestBody body = RequestBody.create(MediaType.parse("image/*"), temp);
             requestBody.addFormDataPart("file", temp.getName(), body);
-            Request request = new Request.Builder().url("http://35.222.222.232/back_end/uploadImage").post(requestBody.build()).build();
+            Request request = new Request.Builder().url("http://35.222.222.232/uploadImage/").post(requestBody.build()).build();
             // the url was localhose before
             client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
                 @Override
@@ -523,22 +526,22 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
         // process string for material
         StringBuffer sb_material = new StringBuffer();
         for(String s:rmaterial){
-            sb_material.append(s+"\r");
+            sb_material.append(s+"\n");
         }
         // process string for amount
         StringBuffer sb_amount = new StringBuffer();
         for(String s:ramount){
-            sb_amount.append(s+"\r");
+            sb_amount.append(s+"\n");
         }
         //process string for rsteps
         StringBuffer sb_step = new StringBuffer();
         for(String s:rsteps){
-            sb_step.append(s+"\r");
+            sb_step.append(s+"\n");
         }
         //process string for rtime
         StringBuffer sb_time = new StringBuffer();
         for(String s:rtime){
-            sb_time.append(s+"\r");
+            sb_time.append(s+"\n");
         }
 
         urlBuilder.addQueryParameter("user_id",user_id);
