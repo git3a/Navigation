@@ -581,18 +581,13 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
             public void onResponse(Call call, Response response) throws IOException {
                 System.out.println("Onresponse");
 
-//                Intent intent = new Intent();
-//                intent.setClass(BuildNewRecipe.this, BuildNewRecipe.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                startActivity(intent);
-//                lock = false;
+               Intent intent = new Intent();
+               intent.setClass(BuildNewRecipe.this, BuildNewRecipe.class);
+               intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+               startActivity(intent);
             }
         });
-//        while (lock) {
-//        }
-        Toast.makeText(BuildNewRecipe.this,"保存成功",Toast.LENGTH_LONG).show();
-
-
+        Toast.makeText(BuildNewRecipe.this,"アプロードした",Toast.LENGTH_LONG).show();
     }
 
 }
