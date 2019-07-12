@@ -516,7 +516,7 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
     }
 
 
-
+    private boolean lock = true; // thread lock
     private void sendRecipeBack(String rname, String img_url,ArrayList<String> rmaterial,
                                 ArrayList<String> ramount, ArrayList<String> rsteps, ArrayList<String> rtime){
         Request.Builder reqBuild = new Request.Builder().get();
@@ -580,14 +580,19 @@ public class BuildNewRecipe extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 System.out.println("Onresponse");
+
+//                Intent intent = new Intent();
+//                intent.setClass(BuildNewRecipe.this, BuildNewRecipe.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                lock = false;
             }
         });
-
+//        while (lock) {
+//        }
         Toast.makeText(BuildNewRecipe.this,"保存成功",Toast.LENGTH_LONG).show();
-        Intent intent = new Intent();
-        intent.setClass(BuildNewRecipe.this, BuildNewRecipe.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
+
+
     }
 
 }
