@@ -191,7 +191,7 @@ public class  Recipe extends AppCompatActivity {
                     for (int i = 0; i < time.length; i++) {
                         times.add(Integer.parseInt(time[i]));
                     }
-
+                    locked = false;
                 }catch (Exception e) {
                     locked = false;
                     System.out.println(e);
