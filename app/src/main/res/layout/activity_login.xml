@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/message"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginHorizontal="40dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +43,7 @@
             <EditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:hint="ID"
                 android:maxLength="20"
                 android:textColor="#8B8B7A">
@@ -70,15 +70,15 @@
 
         <FrameLayout
             android:id="@+id/usercode_layout"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/username_layout"
             android:gravity="center">
 
             <EditText
                 android:id="@+id/password"
-                android:layout_width="fill_parent"
-                android:layout_height="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="パスワード"
                 android:inputType="textPassword"
                 android:maxLength="20"
@@ -93,8 +93,8 @@
 
         <Button
             android:id="@+id/login"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/usercode_layout"
             android:gravity="center"
             android:maxWidth="40dp"
@@ -106,8 +106,8 @@
 
         <Button
             android:id="@+id/reg"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/login"
             android:layout_alignParentRight="true"
             android:maxWidth="40dp"
