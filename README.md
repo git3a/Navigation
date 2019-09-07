@@ -1,2 +1,3 @@
 # 菜谱app
-![image](https://raw.githubusercontent.com/wiki/git3a/Navigation/homg.png)
+主界面
+![image](https://github.com/git3a/Navigation/blob/master/image/home.PNG)
